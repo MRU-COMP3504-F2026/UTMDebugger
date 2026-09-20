@@ -10,3 +10,4 @@ https://drive.google.com/drive/folders/1e1vB8FgEADZmQ7_LU2bbv6SzU05HoB7D
 
 - Jordan Kulcsar
 - Zen Noakes
+- Patrick Hsueh
