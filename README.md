@@ -12,3 +12,4 @@ https://drive.google.com/drive/folders/1e1vB8FgEADZmQ7_LU2bbv6SzU05HoB7D
 - Zen Noakes
 - Patrick Hsueh
 - Anferne Pineda
+- Kevin Bertasius
