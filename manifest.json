@@ -18,7 +18,7 @@
         "<all_urls>"
     ],
     "action": {
-        "default_popup": "index.html",
+        "default_popup": "dist/index.html",
         "default_icon": "icon.png"
     }
 
