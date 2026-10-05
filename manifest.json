@@ -1,0 +1,25 @@
+{
+    "name": "UTMDebugger",
+    "version": "1.0",
+    "description": "A Chrome extension to debug UTM tracking parameters in URLs",
+    "manifest_version": 3,
+    "background": {
+        "service_worker": "dist/background.js",
+        "type": "module"
+    },
+    "permissions": [
+        "activeTab",
+        "scripting",
+        "cookies",
+        "webRequest",
+        "tabs"
+    ],
+    "host_permissions": [
+        "<all_urls>"
+    ],
+    "action": {
+        "default_popup": "dist/index.html",
+        "default_icon": "icon.png"
+    }
+
+}
