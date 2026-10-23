@@ -1,3 +1,5 @@
+@import "tailwindcss";
+@layer components {
 :root {
   --green: #176b4c;
   --green-light: #e3f1eb;
@@ -249,4 +251,5 @@ h2 {
   background: #f7faf8;
   color: var(--muted);
   font-size: 10px;
+}
 }
