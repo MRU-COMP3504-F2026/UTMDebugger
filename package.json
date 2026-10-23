@@ -1,0 +1,25 @@
+{
+    "scripts": {
+        "build": "vite build",
+        "dev": "vite build --watch"
+    },
+    "name": "UTMDebugger",
+    "version": "1.0.0",
+    "description": "A Google Chrome Extension that tracks UTM parameters",
+    "main": "vite.config.js",
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/MRU-COMP3504-F2026/UTMDebugger.git"
+    },
+    "keywords": [],
+    "author": "",
+    "license": "ISC",
+    "type": "commonjs",
+    "bugs": {
+        "url": "https://github.com/MRU-COMP3504-F2026/UTMDebugger/issues"
+    },
+    "homepage": "https://github.com/MRU-COMP3504-F2026/UTMDebugger#readme",
+    "devDependencies": {
+        "vite": "^8.0.14"
+    }
+}
