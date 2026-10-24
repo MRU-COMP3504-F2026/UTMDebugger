@@ -43,7 +43,9 @@ chrome.webRequest.onBeforeRequest.addListener(
             // get the extractor function from the object containing all the extractor function
             const extractor = extractorFunctions[name];
             // call the extractor with the database and details
-            extractor(db, details);
+            const checkValue = extractor(db, details);
+            
+            
 
         } catch(e){
             console.log(e);
