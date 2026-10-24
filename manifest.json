@@ -18,8 +18,8 @@
         "<all_urls>"
     ],
     "action": {
-        "default_popup": "src/popup.html",
-        "default_icon": "icon.png"
+        "default_popup": "dist/src/popup.html",
+        "default_icon": "dist/icons/icon-inactive.png"
     }
 
 }

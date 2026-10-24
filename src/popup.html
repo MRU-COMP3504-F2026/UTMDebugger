@@ -4,14 +4,14 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>UTM Debugger</title>
-    <link rel="stylesheet" href="popup.css">
+    <link rel="stylesheet" href="./popup.css">
 </head>
 
 <body>
     <!-- header section: logo, title, and domain of the current page -->
     <header class="header">
         <div class="brand">
-            <img src="icon.png" alt="UTM Debugger Logo" width="32" height="32">
+            <img src="../public/logo.png" alt="UTM Debugger Logo" width="32" height="32">
         </div>
         <div class="title">
             <h1>UTM Debugger</h1>
@@ -38,7 +38,7 @@
             <div class="legend">
                 <span><i class="dot green"></i>Healthy</span>
                 <span><i class="dot red"></i>Error</span>
-                <span><i class="dot grey"></i>Not Detected</span>
+                <span><i class="dot gray"></i>Not Detected</span>
             </div>
             
             <div id="tracker-list"></div>
@@ -75,6 +75,6 @@
         <span>v1.0</span>
     </footer>
     <!-- JavaScript for handling popup functionality -->
-    <script src="popup.js"></script>
+    <script type="module" src="./popup.js"></script>
 </body>
 </html>
