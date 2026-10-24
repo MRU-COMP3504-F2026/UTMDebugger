@@ -1,5 +1,5 @@
-
-
+import { extractorFunctions } from './utils/extractors.js';
+import { database } from './utils/dbhelper.js';
 /*---------------------------------------------------*/
 /*              Main API call Listener               */
 /*---------------------------------------------------*/
@@ -23,21 +23,30 @@ chrome.webRequest.onBeforeRequest.addListener(
     async (/* API Call Request Info = */ details) => {
 
         try{
-            // create the url and hostname variables using details
+            // create the url variable using details
             const url = new URL(details.url);
-            const hostname = URL.hostname;
 
             // Open the database instance (uses a db class, initialize an object in that class and use the db)
-            const db = null;
+            const db = database;
+            db.open();
 
             // Check to see if the extension is enabled for this site
 
             // Check to see if the call is a valid tracking software api call
             const name = await runFuncWithTimeout(
             isValidTrackingCall, [db,url], 2000);
-            // Handle the Api Call 
-        } catch(e){
+            
+            // if name is false, then return as it is a api call that we don't care about
+            if (!name) return;
 
+            // Handle the Api Call 
+            // get the extractor function from the object containing all the extractor function
+            const extractor = extractorFunctions[name];
+            // call the extractor with the database and details
+            extractor(db, details);
+
+        } catch(e){
+            console.log(e);
         }
         
     },
@@ -59,12 +68,22 @@ chrome.webRequest.onBeforeRequest.addListener(
  * 3. Does the API call have the exclude tracking option enabled
  * 
  * @param {!Database} db - the database instance
- * @param {string} url - The full url of the API call
- * @return {!Promise<string|boolean>}- The tracking software name if passed, else, false
+ * @param {string} URL - The full url of the API call
+ * @return {!Promise<string|boolean>}- The tracking software extractor function name if passed, else, false
  */
 async function isValidTrackingCall(db, url) {
     // return false the moment when a condition fails
     // condition 1
+    // get the hostname of the api call url
+    const hostname = url.hostname;
+    // get the basic tracking software details. 
+    const trackerRecord = db.get('trackingDomains', hostname)
+
+    // if tracking software record is not found, return false
+    // also it's currently broken because you need to check for two things:
+    // if the hostname contains the valid tracking software domain
+    // if the hostname does not contain the invalid version of the tracking 
+    if (!trackerRecord) return false;
 
     // condition 2
 
