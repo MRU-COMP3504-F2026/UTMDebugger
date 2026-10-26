@@ -61,6 +61,23 @@ chrome.webRequest.onBeforeRequest.addListener(
         "requestBody"
     ]
 )
+const ICONS = {
+    active: '/dist/icons/icon-active.png',
+    inactive: '/dist/icons/icon-inactive.png'
+};
+
+function applyIcon(isActive) {
+    chrome.action.setIcon({
+        path: isActive ? ICONS.active : ICONS.inactive
+    });
+}
+
+// popup opens -> green, popup closes -> gray
+chrome.runtime.onConnect.addListener((port) => {
+    if (port.name !== 'popup') return;
+    applyIcon(true);
+    port.onDisconnect.addListener(() => applyIcon(false));
+});
 
 /**
  * Takes a API call url and runs a few checks:
