@@ -11,6 +11,7 @@ export default defineConfig({
                 entryFileNames: '[name].js',
                 format: 'es'
             }
-        }
+        },
+        minify: false
     }
 });
