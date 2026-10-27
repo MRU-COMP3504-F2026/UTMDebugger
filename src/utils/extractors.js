@@ -1,51 +1,39 @@
+import { database } from '../utils/dbhelper.js';
+
 export const extractorFunctions = {
-    googleAnalyticsExtractor(db, details){
-        function checkConsistentUData(db){
+    googleAnalyticsExtractor(database, details){
+        function checkConsistentUData(database){
             //returns a json if mismatch, else return true
         }
-
         //extracting u data
-
-        return checkConsistentUData(db);
+        return checkConsistentUData(database);
     },
-
-    clarityExtractor(db, details){
-        function checkConsistentUData(db){
+    clarityExtractor(database, details){
+        function checkConsistentUData(database){
             //returns a json if mismatch, else return true
         }
-
         //extracting u data
-
-        return checkConsistentUData(db);
+        return checkConsistentUData(database);
     },
-
-    hubSpotExtractor(ddb, details){
-        function checkConsistentUData(db){
+    hubSpotExtractor(database, details){
+        function checkConsistentUData(database){
             //returns a json if mismatch, else return true
         }
-
         //extracting u data
-
-        return checkConsistentUData(db);
+        return checkConsistentUData(database);
     },
-
-    googleAdsExtractor(db, details){
-        function checkConsistentUData(db){
+    googleAdsExtractor(database, details){
+        function checkConsistentUData(database){
             //returns a json if mismatch, else return true
         }
-
         //extracting u data
-
-        return checkConsistentUData(db);
+        return checkConsistentUData(database);
     },
-
-    metaPixelExtractor(db, details){
-        function checkConsistentUData(db){
+    metaPixelExtractor(database, details){
+        function checkConsistentUData(database) {
             //returns a json if mismatch, else return true
         }
-
         //extracting u data
-
-        return checkConsistentUData(db);
+        return checkConsistentUData(database);
     }
 }

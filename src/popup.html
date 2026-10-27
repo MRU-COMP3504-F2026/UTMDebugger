@@ -6,7 +6,6 @@
     <title>UTM Debugger</title>
     <link rel="stylesheet" href="./popup.css">
 </head>
-
 <body>
     <!-- header section: logo, title, and domain of the current page -->
     <header class="header">
@@ -18,7 +17,6 @@
             <p class="domain">current-running-url.com</p>
         </div>
     </header>
-
     <!-- navigation section: buttons to switch between tabs -->
     <nav class="navigation">
         <button class="nav-button active" data-target="status" type="button">Status</button>
@@ -26,15 +24,12 @@
         <button class="nav-button" data-target="blocking" type="button">Blocking</button>
         <button class="nav-button" data-target="settings" type="button">Settings</button>
     </nav>
-
     <!-- Tracker Status Tab (Main Tab): displays the content of the selected tab -->
     <main class="content">
         <section id="status" class="page">
             <h2>Tracker Status</h2>
             <div id="utm-parameters"></div>
-
             <p class="description">Tracker health on current page</p>
-
             <div class="legend">
                 <span><i class="dot green"></i>Healthy</span>
                 <span><i class="dot red"></i>Error</span>
@@ -43,23 +38,19 @@
             
             <div id="tracker-list"></div>
         </section>
-
         <!-- Errors Tab: displays the content of the selected tab -->
         <section id="errors" class="page" style="display: none;">
             <h2>Error Log</h2>
             <p class="description">Recent Tracking errors</p>
             <div id="error-messages"></div>
         </section>
-
         <!-- Blocking Tab: displays the content of the selected tab -->
         <section id="blocking" class="page" style="display: none;">
             <h2>Tracker Blocking</h2>
             <p class="description">Choose which trackers to block</p>
             <div id="blocking-content"></div>
-
             <button id="export-errors" type="button">Export error log</button>
         </section>
-
         <!-- Settings Tab: displays the content of the selected tab -->
         <section id="settings" class="page" style="display: none;">
             <h2>Settings</h2>
@@ -67,7 +58,6 @@
             <div id="settings-content"></div>
         </section>
     </main>
-
     <!-- footer section: DATA FYI/Version info -->
     <footer class="footer">
         <span>Data is stored locally</span>

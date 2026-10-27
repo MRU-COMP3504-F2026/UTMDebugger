@@ -335,46 +335,12 @@ export class Database {
   }
 
   /**
-   * Deletes every saved request. Tracking domains, cookies and settings are kept.
+   * Deletes every saved request. Tracking domains and settings are kept.
    *
    * @returns {Promise<void>} Resolves once the requests are deleted.
    */
   async clearRequestHistory() {
     await this.clear('requests');
-  }
-
-  // Cookie snapshots
-
-  /**
-   * Saves the value a watched cookie had at one stage of a page load, and logs the result.
-   *
-   * @param {Object} record
-   *   - Required cookieName, value, documentStage and timeStamp.
-   *   - Optional pageURL and other cookie details such as domain or path.
-   *   - Must not include an id.
-   * @returns {Promise<Object>} The saved snapshot with its generated id.
-   */
-  async saveCookieSnapshot(record) {
-    return await this.#saveNewRecord('cookieSnapshots', record, 'Cookie snapshot');
-  }
-
-  /**
-   * Lists cookie snapshots matching every given filter, oldest first.
-   *
-   * @param {Object} [filters={}] Exact cookieName, value, documentStage, pageURL or timeStamp values.
-   * @returns {Promise<Object[]>} The matching snapshots.
-   */
-  async listCookieSnapshots(filters = {}) {
-    return await this.list('cookieSnapshots', filters);
-  }
-
-  /**
-   * Deletes every cookie snapshot. The list of watched cookies is kept.
-   *
-   * @returns {Promise<void>} Resolves once the snapshots are deleted.
-   */
-  async clearCookieSnapshots() {
-    await this.clear('cookieSnapshots');
   }
 
   // Settings
@@ -435,7 +401,7 @@ export class Database {
    * Adds a new record to a store whose ids are generated, and logs the result.
    * Only the `id` and the error name are logged, never captured values.
    *
-   * @param {string} storeName 'requests' or 'cookieSnapshots'.
+   * @param {string} storeName 'requests'.
    * @param {Object} record The new record, without an `id`.
    * @param {string} description What the record is, used in log and error messages.
    * @returns {Promise<Object>} The saved record, including its generated `id`.

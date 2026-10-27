@@ -1,4 +1,4 @@
-import {DOCUMENT_STAGES, STORE_KEYS} from './schema.js';
+import {STORE_KEYS} from './schema.js';
 
 // Every write passes through `validateRecord` before it reaches IndexedDB, and every list query passes through `validateQuery`.
 // Bad input is rejected with a `TypeError` that names the field, instead of being stored and causing problems later.
@@ -7,8 +7,6 @@ import {DOCUMENT_STAGES, STORE_KEYS} from './schema.js';
 const SUPPORTED_FILTERS = {
   trackingDomains: ['domain', 'providerName', 'extractorName', 'captureEnabled'],
   requests: ['requestId', 'tabId', 'hostname', 'pageURL', 'timeStamp', 'utmSource', 'utmMedium'],
-  watchedCookies: ['name', 'valueType', 'providerName'],
-  cookieSnapshots: ['cookieName', 'value', 'documentStage', 'pageURL', 'timeStamp'],
   lastSeenValues: ['name'],
   settings: ['key'],
 };
@@ -150,19 +148,6 @@ function validateURL(value, field) {
 }
 
 /**
- * Requires one of the page load stages listed in `DOCUMENT_STAGES`.
- *
- * @param {*} value Stage to check.
- * @returns {void}
- * @throws {TypeError} If the value is not a known stage.
- */
-function validateDocumentStage(value) {
-  if (!DOCUMENT_STAGES.includes(value)) {
-    throw new TypeError(`documentStage must be one of: ${DOCUMENT_STAGES.join(', ')}.`);
-  }
-}
-
-/**
  * Requires the record to have a value field, even if that value is undefined.
  *
  * @param {Object} record Record already checked as an object.
@@ -291,21 +276,6 @@ export function validateRecord(storeName, record) {
       if (savedRecord.frameId !== undefined) validateChromeId(savedRecord.frameId, 'frameId');
       if (savedRecord.initiator !== undefined) validateString(savedRecord.initiator, 'initiator');
       break;
-    case 'watchedCookies':
-      validateString(savedRecord.valueType, 'valueType');
-      validateString(savedRecord.providerName, 'providerName');
-      break;
-    case 'cookieSnapshots':
-      validateString(savedRecord.cookieName, 'cookieName');
-      // Cookie values are always strings. An empty string is a real value.
-      if (typeof savedRecord.value !== 'string') {
-        throw new TypeError('value must be a string.');
-      }
-      validateDocumentStage(savedRecord.documentStage);
-      savedRecord.pageURL ??= null;
-      if (savedRecord.pageURL !== null) validateURL(savedRecord.pageURL, 'pageURL');
-      validateTimeStamp(savedRecord.timeStamp);
-      break;
     case 'lastSeenValues':
     case 'settings':
       validateHasValue(savedRecord);
@@ -352,14 +322,6 @@ export function validateQuery(storeName, filters = {}) {
         break;
       case 'captureEnabled':
         validateBoolean(value, field);
-        break;
-      case 'documentStage':
-        validateDocumentStage(value);
-        break;
-      case 'value':
-        if (typeof value !== 'string') {
-          throw new TypeError('value must be a string.');
-        }
         break;
       default:
         validateString(value, field);

@@ -1,7 +1,9 @@
 {
     "scripts": {
         "build": "vite build",
-        "dev": "vite build --watch"
+        "dev": "vite build --watch",
+        "serve": "vite",
+        "test": "node tests/run.mjs"
     },
     "name": "UTMDebugger",
     "version": "1.0.0",
@@ -21,6 +23,7 @@
     "homepage": "https://github.com/MRU-COMP3504-F2026/UTMDebugger#readme",
     "devDependencies": {
         "@tailwindcss/vite": "^4.3.3",
+        "playwright": "^1.63.0",
         "tailwindcss": "^4.3.3",
         "vite": "^8.0.14"
     }
