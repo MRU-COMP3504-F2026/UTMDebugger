@@ -12,7 +12,7 @@ export const extractorFunctions = {
         const arrayBuffer = details.requestBody?.raw?.[0]?.bytes; // collects the raw gzip bytes
         // if not found, return undefined;
         if(!arrayBuffer) return undefined;
-
+        // testing
         // creates a decompression 'pipe'
         const ds = new DecompressionStream('gzip'); 
         // wrap the bytes into a blob (binary large object) just to be able to use the stream() func
