@@ -35,7 +35,8 @@ export const extractorFunctions = {
         // get the current page url
         const currURL = await pageURL(details)
         const currDomain = currURL.host;
-
+        
+        // is historic user data found
         const found = false;
 
         // check history for descrepencies in User ID
@@ -49,10 +50,10 @@ export const extractorFunctions = {
 
             // domain is matched, but it is not the same url
             if (key != currURL){
-                // if the previous url didn't track Micrsoft Clarity code then it
+                // if the previous url didn't track Microsoft Clarity code then it
                 // means that the previous page the user was on for the same domain is 
                 // missing the tracking code when the current page has it, throw error
-                if(!value || !value["Micrsoft Clarity"]){
+                if(!value || !value["Microsoft Clarity"]){
                     return {
                         isError:true,
                         errorMSG:`The page '${key}' does not contain Microsoft Clarity tracking code while this one does`,
@@ -64,14 +65,14 @@ export const extractorFunctions = {
 
                 // if historic page userID doesn't match the current page url
                 // it means that something wrong happened and return an error object
-                if(value["Micrsoft Clarity"][0].userID != userID){
+                if(value["Microsoft Clarity"][0].userID != userID){
                     return {
                         isError:true,
-                        errorMSG:`Micrsoft Clarity user ID for page ${key} does not match the user ID for the current page ${currURL}`,
+                        errorMSG:`Microsoft Clarity user ID for page ${key} does not match the user ID for the current page ${currURL}`,
                         type:"UIDMismatch", 
                         currPage: currURL,
                         errorPage: key,
-                        errorPageVal: value["Micrsoft Clarity"][0].userID,
+                        errorPageVal: value["Microsoft Clarity"][0].userID,
                         currPageVal: userID
                     }
                 } 
@@ -80,23 +81,25 @@ export const extractorFunctions = {
 
                 // Clarity record exists and matches userID, set found to user data
                 found = {
+                    isError:false,
                     userID:userID,
-                    utmSource:value["Micrsoft Clarity"][0].utmSource,
-                    utmMedium:value["Micrsoft Clarity"][0].utmMedium
+                    utmSource:value["Microsoft Clarity"][0].utmSource,
+                    utmMedium:value["Microsoft Clarity"][0].utmMedium
                 };
             } else /* url matched */ {
                 // if page does match but value is falsly or value of microsft clarity is falsly (aka empty or not there)
                 // then it means the this is the first entry for the page and we want to find a previous one
-                if (!value || !value["Micrsoft Clarity"]) continue;
+                if (!value || !value["Microsoft Clarity"]) continue;
 
                 // if no error and data already found, continue to save time
                 if (found) continue;
 
                 // Clarity record exists, set found to user data
                 found = {
+                    isError:false,
                     userID:userID,
-                    utmSource:value["Micrsoft Clarity"][0].utmSource,
-                    utmMedium:value["Micrsoft Clarity"][0].utmMedium
+                    utmSource:value["Microsoft Clarity"][0].utmSource,
+                    utmMedium:value["Microsoft Clarity"][0].utmMedium
                 };
             }
         }
@@ -108,7 +111,9 @@ export const extractorFunctions = {
             // get envelope A (that contains the user UTM data);
             const envelopeA = jsonResult.a;
 
-            console.log(envelopeA);
+            envelopeA.forEach((val, i) => {
+                // from what it looks like, i need to find [...,1,["url with utm "],....]
+            });
         }
 
         return found;
