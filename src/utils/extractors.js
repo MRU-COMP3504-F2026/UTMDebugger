@@ -37,7 +37,7 @@ export const extractorFunctions = {
         const currDomain = currURL.host;
         
         // is historic user data found
-        const found = false;
+        let found = false;
 
         // check history for descrepencies in User ID
         // for each historic url
