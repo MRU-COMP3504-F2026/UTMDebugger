@@ -61,17 +61,14 @@ const statusConfig = {
   Healthy: {
     dot: "green",
     label: "Healthy",
-    chip: "Healthy"
   },
   Error: {
     dot: "red",
     label: "Error",
-    chip: "Error"
   },
   Missing: {
     dot: "gray",
     label: "Not Detected",
-    chip: "Not Detected"
   }
 };
 
