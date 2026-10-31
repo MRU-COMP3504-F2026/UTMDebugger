@@ -1,5 +1,6 @@
 const tests = [];
 let currentLabel = '';
+let currentIssues = null;
 
 export function suite(label, defineTests) {
   currentLabel = `Running Test Suite: ${label}`;
@@ -10,6 +11,25 @@ export function suite(label, defineTests) {
 
 export function test(name, run) {
   tests.push({name, run, label: currentLabel});
+}
+
+export function expect(condition, message = 'expectation failed') {
+  if (currentIssues === null) {
+    throw new Error('expect can only be called while a test is running');
+  }
+  if (!condition) {
+    currentIssues.push(message);
+  }
+}
+
+export function require(value, message) {
+  if (value === false) {
+    throw new Error(message ?? 'requirement failed');
+  }
+  if (value === null || value === undefined) {
+    throw new Error(message ?? `required value was ${value}`);
+  }
+  return value;
 }
 
 export function assert(condition, message = 'assertion failed') {
@@ -69,15 +89,21 @@ export async function runTests(files) {
       listLabel = label;
     }
     const item = document.createElement('li');
+    currentIssues = [];
     try {
       await run();
+    } catch (error) {
+      currentIssues.push((error && error.message) || String(error));
+    }
+    const reasons = currentIssues;
+    currentIssues = null;
+    if (reasons.length === 0) {
       passed++;
       item.textContent = `PASS: ${name}`;
       console.log(item.textContent);
-    } catch (error) {
+    } else {
       failed++;
-      const reason = (error && error.message) || String(error);
-      item.textContent = `FAIL: ${name} (${reason})`;
+      item.textContent = `FAIL: ${name} (${reasons.join('; ')})`;
       console.error(item.textContent);
     }
     list.append(item);
