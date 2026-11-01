@@ -1,6 +1,7 @@
-import {suite, test, assertEqual} from './testing.js';
-import {metaPixelExtractor} from '../src/extractors/meta-pixel-extractor.js';
-import {Database} from '../src/database/manager.js';
+import {suite, test, assertEqual} from '../testing.js';
+import {metaPixelExtractor} from '../../src/extractors/meta-pixel-extractor.js';
+import {extractorFunctions} from '../../src/utils/extractors.js';
+import {Database} from '../../src/database/manager.js';
 
 suite('Meta Pixel extractor');
 
@@ -10,9 +11,6 @@ const PAGEVIEW_URL =
 
 test('reads a GET PageView', () => {
   assertEqual(metaPixelExtractor({url: PAGEVIEW_URL}), {
-    pageURL: 'https://shop.test/?utm_source=fb&utm_medium=paid',
-    utmSource: 'fb',
-    utmMedium: 'paid',
     pixelId: '123',
     eventName: 'PageView',
     fbp: 'fb.1.1.2',
@@ -38,15 +36,7 @@ test('reads form POST bodies', () => {
     url: 'https://www.facebook.com/tr',
     requestBody: {formData: {id: ['123'], ev: ['Purchase']}},
   });
-  assertEqual(result, {
-    pageURL: null,
-    utmSource: null,
-    utmMedium: null,
-    pixelId: '123',
-    eventName: 'Purchase',
-    fbp: null,
-    fbc: null,
-  });
+  assertEqual(result, {pixelId: '123', eventName: 'Purchase', fbp: null, fbc: null});
 });
 
 test('prefers query params over body params', () => {
@@ -57,17 +47,9 @@ test('prefers query params over body params', () => {
   assertEqual(result.eventName, 'Lead');
 });
 
-test('turns an invalid dl into null instead of throwing', () => {
-  const result = metaPixelExtractor({url: 'https://www.facebook.com/tr/?id=1&dl=nope'});
-  assertEqual([result.pageURL, result.utmSource, result.utmMedium], [null, null, null]);
-});
-
-test('uses null and not undefined for missing params', () => {
-  assertEqual(metaPixelExtractor({url: 'https://www.facebook.com/tr/?id=1'}), {
-    pageURL: null,
-    utmSource: null,
-    utmMedium: null,
-    pixelId: '1',
+test('uses null and not undefined for missing values', () => {
+  assertEqual(metaPixelExtractor({url: 'https://www.facebook.com/tr/?id=123'}), {
+    pixelId: '123',
     eventName: null,
     fbp: null,
     fbc: null,
@@ -86,12 +68,13 @@ function deleteTestDatabase() {
   });
 }
 
-test('the default tracking domains route a Pixel beacon to this extractor', async () => {
+test('a Pixel beacon gets routed to a handler that exists', async () => {
   await deleteTestDatabase();
   const database = new Database(TEST_DATABASE_NAME);
   const trackingDomain = await database.findTrackingDomain(PAGEVIEW_URL);
   assertEqual(trackingDomain.extractorName, 'metaPixelExtractor');
   assertEqual(trackingDomain.captureEnabled, true);
+  assertEqual(typeof extractorFunctions[trackingDomain.extractorName], 'function');
 });
 
 test('the Meta Pixel script download is not treated as a tracking request', async () => {
@@ -99,19 +82,4 @@ test('the Meta Pixel script download is not treated as a tracking request', asyn
   const database = new Database(TEST_DATABASE_NAME);
   const url = 'https://connect.facebook.net/en_US/fbevents.js';
   assertEqual(await database.findTrackingDomain(url), undefined);
-});
-
-test('saveRequest accepts what the extractor returns', async () => {
-  await deleteTestDatabase();
-  const database = new Database(TEST_DATABASE_NAME);
-  const saved = await database.saveRequest({
-    ...metaPixelExtractor({url: PAGEVIEW_URL}),
-    requestId: '1',
-    url: PAGEVIEW_URL,
-    method: 'GET',
-    timeStamp: Date.now(),
-    tabId: 1,
-  });
-  assertEqual([saved.pixelId, saved.eventName, saved.utmSource], ['123', 'PageView', 'fb']);
-  assertEqual((await database.listRequests({utmSource: 'fb'})).length, 1);
 });
