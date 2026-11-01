@@ -50,24 +50,7 @@ export const DEFAULT_TRACKING_DOMAINS = [
   },
 ];
 
-export const DEFAULT_WATCHED_COOKIES = [
-  {name: 'hs_login_email', valueType: 'email', providerName: 'HubSpot'},
-  {name: 'hs_login_phone', valueType: 'phone', providerName: 'HubSpot'},
-  {name: 'ec_email', valueType: 'email', providerName: 'Generic'},
-  {name: 'ec_phone', valueType: 'phone', providerName: 'Generic'},
-  {name: 'utm_source', valueType: 'source', providerName: 'Generic'},
-  {name: 'utm_campaign', valueType: 'campaign', providerName: 'Generic'},
-  {name: 'sa-u-source', valueType: 'source', providerName: 'StackAdapt'},
-  {name: 'utm_medium', valueType: 'medium', providerName: 'Generic'},
-  {name: 'calltrk_landing', valueType: 'landingPage', providerName: 'CallRail'},
-  {name: 'calltrk_session_id', valueType: 'sessionId', providerName: 'CallRail'},
-  {name: 'sa-user-id', valueType: 'userId', providerName: 'StackAdapt'},
-  {name: 'wix_utm_params', valueType: 'source', providerName: 'Wix'},
-  {name: 'mpaSessionId', valueType: 'sessionId', providerName: 'Generic'},
-];
-
 export const DEFAULT_SETTINGS = [
   {key: 'captureTrackingRequests', value: false},
-  {key: 'captureCookieSnapshots', value: false},
   {key: 'excludedPages', value: []},
 ];

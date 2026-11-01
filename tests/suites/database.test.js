@@ -1,5 +1,5 @@
-import {suite, test, assertEqual, assertRejects} from './testing.js';
-import {Database} from '../src/database/manager.js';
+import {suite, test, assertEqual, assertRejects} from '../testing.js';
+import {Database} from '../../src/database/manager.js';
 
 suite('Database');
 
@@ -85,4 +85,25 @@ test('requests are still saved after closing and reopening', async () => {
   await database.close();
   const reopened = new Database(TEST_DATABASE_NAME);
   assertEqual((await reopened.listRequests()).length, 3);
+});
+
+function openRawDatabase(version, upgrade) {
+  return new Promise((resolve, reject) => {
+    const request = indexedDB.open(TEST_DATABASE_NAME, version);
+    request.onupgradeneeded = () => upgrade?.(request.result, request.transaction);
+    request.onsuccess = () => resolve(request.result);
+    request.onerror = () => reject(request.error);
+  });
+}
+
+test('a new database has no cookie tracking stores or settings', async () => {
+  await deleteTestDatabase();
+  const database = new Database(TEST_DATABASE_NAME);
+  const cookieSetting = await database.getSetting('captureCookieSnapshots');
+  await database.close();
+  const created = await openRawDatabase();
+  const storeNames = [...created.objectStoreNames];
+  created.close();
+  assertEqual(storeNames, ['lastSeenValues', 'requests', 'settings', 'trackingDomains']);
+  assertEqual(cookieSetting, undefined);
 });

@@ -2,7 +2,7 @@ const tests = [];
 let currentLabel = '';
 
 export function suite(label, defineTests) {
-  currentLabel = label;
+  currentLabel = `Running Test Suite: ${label}`;
   if (defineTests) {
     defineTests();
   }
@@ -42,7 +42,6 @@ export async function runTests(files) {
   const summary = document.createElement('p');
   summary.textContent = 'Running...';
   document.body.append(summary);
-
   for (const file of files) {
     currentLabel = file;
     try {
@@ -53,12 +52,10 @@ export async function runTests(files) {
       });
     }
   }
-
   let list = null;
   let listLabel = '';
   let passed = 0;
   let failed = 0;
-
   for (const {name, run, label} of tests) {
     if (list === null || label !== listLabel) {
       if (label) {
@@ -85,9 +82,9 @@ export async function runTests(files) {
     }
     list.append(item);
   }
-
   summary.textContent = `${passed} passed, ${failed} failed`;
   console.log(summary.textContent);
+  globalThis.testResults = {passed, failed};
 }
 
 function stringify(value) {
