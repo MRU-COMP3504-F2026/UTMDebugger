@@ -56,6 +56,7 @@ export const extractorFunctions = {
                 if(!value || !value["Microsoft Clarity"]){
                     return {
                         isError:true,
+                        trackingSoftware:"Microsoft Clarity",
                         errorMSG:`The page '${key}' does not contain Microsoft Clarity tracking code while this one does`,
                         type:"missingCode",
                         currPage:currURL,
@@ -68,6 +69,7 @@ export const extractorFunctions = {
                 if(value["Microsoft Clarity"][0].userID != userID){
                     return {
                         isError:true,
+                        trackingSoftware:"Microsoft Clarity",
                         errorMSG:`Microsoft Clarity user ID for page ${key} does not match the user ID for the current page ${currURL}`,
                         type:"UIDMismatch", 
                         currPage: currURL,
