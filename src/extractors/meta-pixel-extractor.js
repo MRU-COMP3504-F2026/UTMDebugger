@@ -38,10 +38,8 @@ export function metaPixelExtractor(details) {
 
   // Unknown values are stored as null.
   // `Map.get()` returns undefined for a missing key, so each lookup is converted.
-  return {
-    pageURL,
-    utmSource,
-    utmMedium,
+  return { 
+    pageURL, utmSource, utmMedium,
     pixelId: params.get('id') ?? null,
     eventName: params.get('ev') ?? null,
     fbp: params.get('fbp') ?? null,
