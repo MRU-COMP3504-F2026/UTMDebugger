@@ -50,3 +50,53 @@ suite('Popup', () => {
     assertEqual(state, {name: 'Microsoft Clarity', description: 'Reported no UTM values', status: 'Healthy'});
   });
 });
+
+test('navigation switches pages', async () => {
+  const fixture = document.createElement('div');
+  fixture.innerHTML = `
+    <div id="tracker-list"></div>
+    <button class="nav-button" data-target="details"></button>
+    <section class="page" id="home"></section>
+    <section class="page" id="details" hidden></section>`;
+  document.body.append(fixture);
+  await import('../../src/popup.js?test=simple-nav');
+  fixture.querySelector('button').click();
+  assertEqual(fixture.querySelector('#home').hidden, true);
+  assertEqual(fixture.querySelector('#details').hidden, false);
+  fixture.remove();
+});
+
+test('places an absent tracker under Not Detected', async () => {
+  const fixture = document.createElement('div');
+  fixture.id = 'tracker-list';
+  document.body.append(fixture);
+  const originalList = database.list;
+  const originalHistory = database.getRequestHistory;
+  database.list = async () => [{ providerName: 'Absent' }];
+  database.getRequestHistory = async () => ({});
+  await import('../../src/popup.js?test=simple-group');
+  const card = fixture.querySelector('.tracker-card');
+  assertEqual(card.querySelector('h3').textContent, 'Absent');
+  assertEqual(
+    card.closest('.tracker-group').querySelector('.group-header').textContent,
+    'Not Detected'
+  );
+  database.list = originalList;
+  database.getRequestHistory = originalHistory;
+  fixture.remove();
+});
+
+test('displays the page hostname', async () => {
+  const fixture = document.createElement('div');
+  fixture.innerHTML = '<span class="domain"></span><div id="tracker-list"></div>';
+  document.body.append(fixture);
+  const originalChrome = globalThis.chrome;
+  globalThis.chrome = {
+    runtime: { id: 'test', connect() {} },
+    tabs: { query: async () => [{ url: 'https://example.com/shop' }] }
+  };
+  await import('../../src/popup.js?test=simple-domain');
+  assertEqual(fixture.querySelector('.domain').textContent, 'example.com');
+  globalThis.chrome = originalChrome;
+  fixture.remove();
+});
