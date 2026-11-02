@@ -1,4 +1,5 @@
 import { database } from '../utils/dbhelper.js';
+import { pageURL } from '../background.js';
 
 export const extractorFunctions = {
     googleAnalyticsExtractor(database, details){

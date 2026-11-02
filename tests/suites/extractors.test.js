@@ -1,6 +1,6 @@
 import {suite, test, assertEqual, assertRejects} from '../testing.js';
 import {Database} from '../../src/database/manager.js';
-//import {extractorFunctions} from '../../src/utils/extractors.js';
+import {extractorFunctions} from '../../src/utils/extractors.js';
 
 
 
@@ -25,20 +25,22 @@ async function mimickGZIPData(){
     }
 }
 
-function makeClarityRequest(requestId, tabId) {
+async function makeClarityRequest(requestId, tabId) {
     return {
         requestId: requestId,
         url: 'https://www.example.com',
         method: 'GET',
         timeStamp: Date.now(),
         tabId: tabId,
-        requestBody: mimickGZIPData()
+        requestBody: await mimickGZIPData()
     };
 }
 
 test('Extract Clarity user data with no conflict', async () => {
     const TEST_DATABASE_NAME = 'UTMDebuggerTest';
     const database = await new Database(TEST_DATABASE_NAME);
-    //const result = await extractorFunctions.clarityExtractor(database,makeClarityRequest('100',1)); currently doesn't work, it is saying that the word 'chrome' is unknown
-    //console.log(result);
+    const exampleRequest = await makeClarityRequest('100',1); // example clarity request
+    //const result = await extractorFunctions.clarityExtractor(database, exampleRequest); //currently doesn't work, it is saying that the word 'chrome' is unknown
+    
+    
 });
