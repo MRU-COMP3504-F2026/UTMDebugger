@@ -122,7 +122,7 @@ async function isValidTrackingCall(db, url) {
  * @param {!Object} details The `webRequest` event details.
  * @return {!Promise<string|null>} The page URL, or `null` when the request has no tab or the tab is gone.
  */
-async function pageURL(details) {
+export async function pageURL(details) {
     if (details.type === 'main_frame') return details.url;
     if (details.tabId < 0) return null;
     let tab;
