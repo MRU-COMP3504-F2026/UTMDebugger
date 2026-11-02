@@ -1,4 +1,5 @@
 import { database } from '../utils/dbhelper.js';
+import {metaPixelExtractor as readMetaPixelRequest} from '../extractors/meta-pixel-extractor.js';
 
 export const extractorFunctions = {
     googleAnalyticsExtractor(database, details){
@@ -133,10 +134,6 @@ export const extractorFunctions = {
         return checkConsistentUData(database);
     },
     metaPixelExtractor(database, details){
-        function checkConsistentUData(database) {
-            //returns a json if mismatch, else return true
-        }
-        //extracting u data
-        return checkConsistentUData(database);
+        return readMetaPixelRequest(details);
     }
 }
