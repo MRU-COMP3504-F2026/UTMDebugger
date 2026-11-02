@@ -5,5 +5,5 @@ runTests([
   './suites/background.test.js',
   './suites/utm.test.js',
   './suites/popup.test.js',
-  './suites/extractors.test.js'
+  './suites/meta-pixel-extractor.test.js',
 ]);
