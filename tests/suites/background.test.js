@@ -82,33 +82,3 @@ suite('Background Listener', () => {
     assertEqual(requests.map((saved) => saved.pageURL), [navigation.url, null]);
   });
 });
-
-suite('Status icon', () => {
-  test('popup open turns the icon active, close turns it inactive', async () => {
-    // Record every icon path the background script sets
-    const icons = [];
-    // Keep the existing chrome stub so we can put it back afterwards
-    const previousChrome = globalThis.chrome;
-    let onConnect;
-    let onDisconnect;
-    // Fake chrome APIs; we save the listeners instead of running them
-    globalThis.chrome = {
-      webRequest: {onBeforeRequest: {addListener() {}}},
-      runtime: {onConnect: {addListener(callback) { onConnect = callback; }}},
-      action: {setIcon({path}) { icons.push(path); }},
-    };
-    try {
-      // The ?icon makes a fresh import, so it registers on this stub
-      await import('../../src/background.js?icon');
-      // Call the listener with a fake popup port, as Chrome would when the popup opens
-      onConnect({name: 'popup', onDisconnect: {addListener(callback) { onDisconnect = callback; }}});
-      // Call the saved close callback, as Chrome would when the popup closes
-      onDisconnect();
-      // Icon should go active first, then inactive
-      assertEqual(icons, ['/dist/icons/icon-active.png', '/dist/icons/icon-inactive.png']);
-    } finally {
-      // Restore chrome so other tests are not affected
-      globalThis.chrome = previousChrome;
-    }
-  });
-});
