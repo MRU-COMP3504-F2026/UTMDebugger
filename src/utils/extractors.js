@@ -1,5 +1,5 @@
 import { database } from '../utils/dbhelper.js';
-import { pageURL } from '../background.js';
+import { pageURL } from './page.js';
 import {metaPixelExtractor as readMetaPixelRequest} from '../extractors/meta-pixel-extractor.js';
 
 export const extractorFunctions = {
