@@ -1,4 +1,4 @@
-chrome.runtime.connect({ name: "popup" });
+if (globalThis.chrome?.runtime?.id) chrome.runtime.connect({ name: "popup" });
 const trackers = [
   {
     name: "Google Analytics",
