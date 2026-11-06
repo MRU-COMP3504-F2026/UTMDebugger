@@ -1,5 +1,5 @@
 import { database } from '../utils/dbhelper.js';
-import { pageURL } from '../background.js';
+import { pageURL } from './page.js';
 import {metaPixelExtractor as readMetaPixelRequest} from '../extractors/meta-pixel-extractor.js';
 
 export const extractorFunctions = {
@@ -87,8 +87,8 @@ export const extractorFunctions = {
                 found = {
                     isError:false,
                     userID:userID,
-                    utmSource:value["Microsoft Clarity"][0].utmSource,
-                    utmMedium:value["Microsoft Clarity"][0].utmMedium
+                    utmSource:value["Microsoft Clarity"][0].utmSource || "direct",
+                    utmMedium:value["Microsoft Clarity"][0].utmMedium || "direct"
                 };
             } else /* url matched */ {
                 // if page does match but value is falsly or value of microsft clarity is falsly (aka empty or not there)
@@ -102,8 +102,8 @@ export const extractorFunctions = {
                 found = {
                     isError:false,
                     userID:userID,
-                    utmSource:value["Microsoft Clarity"][0].utmSource,
-                    utmMedium:value["Microsoft Clarity"][0].utmMedium
+                    utmSource:value["Microsoft Clarity"][0].utmSource || "direct",
+                    utmMedium:value["Microsoft Clarity"][0].utmMedium || "direct"
                 };
             }
         }
@@ -115,11 +115,20 @@ export const extractorFunctions = {
             // get envelope A (that contains the user UTM data);
             const envelopeA = jsonResult.a;
 
-            envelopeA.forEach((val, i) => {
-                // from what it looks like, i need to find [...,1,["url with utm "],....]
-            });
+            const onePos = envelopeA.indexOf(1);
+            const urlString = envelopeA?.[onePos + 1]?.[0];
+            console.log(urlString);
+            if (urlString){
+                const url = new URL(urlString);
+                found = {
+                    isError:false,
+                    userID:userID,
+                    utmSource:url.searchParams.get("utm_source") || "direct",
+                    utmMedium:url.searchParams.get("utm_medium") || "direct"
+                }
+                console.log(found);
+            }
         }
-
         return found;
     },
     hubSpotExtractor(database, details){

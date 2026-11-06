@@ -1,6 +1,7 @@
 import {database} from './utils/dbhelper.js';
 import {extractorFunctions} from './utils/extractors.js';
 import {createLogger} from './utils/logger.js';
+import {pageURL} from './utils/page.js';
 import {findUTM} from './utils/utm.js';
 
 const log = createLogger('listener');
@@ -114,24 +115,6 @@ async function isValidTrackingCall(db, url) {
     // condition 3
     if (!trackerRecord.captureEnabled) return false;
     return trackerRecord.extractorName;
-}
-
-/**
- * Finds the page the user was on when the request was sent.
- *
- * @param {!Object} details The `webRequest` event details.
- * @return {!Promise<string|null>} The page URL, or `null` when the request has no tab or the tab is gone.
- */
-export async function pageURL(details) {
-    if (details.type === 'main_frame') return details.url;
-    if (details.tabId < 0) return null;
-    let tab;
-    try {
-        tab = await chrome.tabs.get(details.tabId);
-    } catch {
-        return null;
-    }
-    return tab.url && /^https?:/.test(tab.url) ? tab.url : null;
 }
 
 /**
