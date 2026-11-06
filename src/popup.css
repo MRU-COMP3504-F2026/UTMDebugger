@@ -1,5 +1,20 @@
 @import "tailwindcss";
 
+@theme {
+  --color-brand: #176b4c;
+  --color-brand-light: #e3f1eb;
+  --color-muted: #73817c;
+  --color-line: #dfe6e2;
+  --color-ink: #272b2a;
+
+  --color-warn-bg: #fef9ec;
+  --color-warn-line: #efe0b8;
+  --color-warn-icon: #f4e3b7;
+  --color-warn-ink: #8a6a1c;
+  --color-before-bg: #f8e8c8;
+  --color-after-bg: #f5dcd8;
+}
+
 @layer components {
   :root {
     --green: #176b4c;
