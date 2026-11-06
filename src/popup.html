@@ -33,11 +33,20 @@
             <div id="tracker-list"></div>
         </section>
         <!-- Errors Tab: displays the content of the selected tab -->
-        <section id="errors" class="page" style="display: none;">
-            <h2>Error Log</h2>
-            <p class="description">Recent Tracking errors</p>
-            <div id="error-messages"></div>
-        </section>
+        <section id="errors" class="page" hidden>
+                <div class="flex items-center justify-between">
+                    <h2 class="text-2xl">Error log</h2>
+                    <span id="error-count" class="rounded-full bg-brand-light px-3.5 py-2 text-xs font-bold text-brand">0 issues</span>               
+                </div>
+                <p class="mt-2 mb-5 text-[13px] text-muted">Recent tracking issues.</p>
+
+  <div id="error-messages" class="flex flex-col gap-4"></div>
+
+  <button id="export-errors" type="button"
+    class="mt-4 rounded-xl border border-line bg-white px-4 py-3 text-xs text-black font-bold hover:bg-gray-50">
+    Export error log
+  </button>
+</section>
         <!-- Blocking Tab: displays the content of the selected tab -->
         <section id="blocking" class="page" style="display: none;">
             <h2>Tracker Blocking</h2>
