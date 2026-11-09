@@ -14,7 +14,7 @@ export const DEFAULT_TRACKING_DOMAINS = [
     domain: 'clarity.ms',
     providerName: 'Microsoft Clarity',
     extractorName: 'clarityExtractor',
-    excludeIfContains: ['script'],
+    excludeIfContains: ['script','tag'],
     captureEnabled: true,
   },
   // Jordan

@@ -10,6 +10,16 @@ export const extractorFunctions = {
         return checkConsistentUData(database);
     },
     async clarityExtractor(database, details){
+        function isURL(possibleURL){
+            let outcome = true;
+            try{
+                const urlString = possibleURL[0];
+                const attempt = new URL(urlString);
+            } catch(e){
+                outcome = false;
+            }
+            return outcome;
+        }
         //extracting u data
         const arrayBuffer = details.requestBody?.raw?.[0]?.bytes; // collects the raw gzip bytes
         // if not found, return undefined;
@@ -32,21 +42,23 @@ export const extractorFunctions = {
         
         // now I need to query the db
         const callHistory = await database.getRequestHistory();
-        console.log(callHistory); 
+        console.log(callHistory);
         
         // get the current page url
         const currURL = await pageURL(details)
-        const currDomain = currURL.host;
+        const processedCurrURL = new URL(currURL);
+        const currDomain = processedCurrURL.host;
         
         // is historic user data found
         let found = false;
-
         // check history for descrepencies in User ID
         // for each historic url
         for(const [key,value] of Object.entries(callHistory)){
             // get the domain of the url in history
-            const histDomain = new URL(key).host;
-
+            const keyURL = new URL(key);
+            const histDomain = keyURL.host;
+            console.log(histDomain);
+            console.log(currDomain);
             // if domain doesn't match, move on to the next historic url
             if (currDomain != histDomain) continue; 
 
@@ -114,21 +126,30 @@ export const extractorFunctions = {
         if (!found){
             // get envelope A (that contains the user UTM data);
             const envelopeA = jsonResult.a;
+            // because the url can be any of the lists in envelopeA, then iterate through them and find it
+            for(const [key,value] of Object.entries(envelopeA)){
+                // since there can be no urls if 1 is the last index, we make the loop do length -1
+                for(let i = 0; i < value.length - 1 && !found; i++){
+                    // since the url always have a 1 in the previous index, I am checking for 1s
+                    if(!value[i] === 1) continue;
+                    // get the supposed list from the index after 1
+                    const possibleURL = value[i+1]
+                    // if value[i+1] is falsly or if it is not a url, continue
+                    if(!possibleURL || !isURL(possibleURL)) continue;
 
-            const onePos = envelopeA.indexOf(1);
-            const urlString = envelopeA?.[onePos + 1]?.[0];
-            console.log(urlString);
-            if (urlString){
-                const url = new URL(urlString);
-                found = {
-                    isError:false,
-                    userID:userID,
-                    utmSource:url.searchParams.get("utm_source") || "direct",
-                    utmMedium:url.searchParams.get("utm_medium") || "direct"
+                    // this means it is likely the correct url and we process it
+                    const url = new URL(possibleURL[0]);
+                    found = {
+                        isError:false,
+                        userID:userID,
+                        utmSource:url.searchParams.get("utm_source") || "direct",
+                        utmMedium:url.searchParams.get("utm_medium") || "direct"
+                    }
                 }
-                console.log(found);
+                if(found) break;
             }
         }
+        console.log(found);
         return found;
     },
     hubSpotExtractor(database, details){

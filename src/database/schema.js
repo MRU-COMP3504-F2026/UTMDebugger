@@ -64,6 +64,7 @@ export function initializeSchema(database) {
     'timeStamp',
     'utmSource',
     'utmMedium',
+    'userID'
   ];
   for (const field of requestIndexes) {
     requests.createIndex(field, field);
