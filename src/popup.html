@@ -48,14 +48,57 @@
   </button>
 </section>
         <!-- Blocking Tab: displays the content of the selected tab -->
-        <section id="blocking" class="page" style="display: none;">
-            <h2>Tracker Blocking</h2>
-            <p class="description">Choose which trackers to block</p>
-            <div id="blocking-content"></div>
-            <button id="export-errors" type="button">Export error log</button>
+        <section id="blocking" class="page" hidden>
+            <h2>Tracker blocking</h2>
+            <p class="description">Choose which trackers to block.</p>
+            <div id="blocking-content">
+                <p class="blocking-notice">Blocking is disabled by default.</p>
+                <div class="blocker-list">
+                    <div class="blocker-row">
+                        <span class="blocker-icon" aria-hidden="true">G</span>
+                        <div class="blocker-info">
+                            <label for="block-ga4">Google Analytics 4</label>
+                            <p>Requests allowed</p>
+                        </div>
+                        <input type="checkbox" id="block-ga4" name="block-ga4" class="blocker-toggle" aria-label="Block Google Analytics 4">
+                    </div>
+                    <div class="blocker-row">
+                        <span class="blocker-icon" aria-hidden="true">G</span>
+                        <div class="blocker-info">
+                            <label for="block-google-ads">Google Ads</label>
+                            <p>Requests allowed</p>
+                        </div>
+                        <input type="checkbox" id="block-google-ads" name="block-google-ads" class="blocker-toggle" aria-label="Block Google Ads">
+                    </div>
+                    <div class="blocker-row">
+                        <span class="blocker-icon" aria-hidden="true">M</span>
+                        <div class="blocker-info">
+                            <label for="block-clarity">Microsoft Clarity</label>
+                            <p>Requests allowed</p>
+                        </div>
+                        <input type="checkbox" id="block-clarity" name="block-clarity" class="blocker-toggle" aria-label="Block Microsoft Clarity">
+                    </div>
+                    <div class="blocker-row">
+                        <span class="blocker-icon" aria-hidden="true">H</span>
+                        <div class="blocker-info">
+                            <label for="block-hubspot">HubSpot</label>
+                            <p>Requests allowed</p>
+                        </div>
+                        <input type="checkbox" id="block-hubspot" name="block-hubspot" class="blocker-toggle" aria-label="Block HubSpot">
+                    </div>
+                    <div class="blocker-row">
+                        <span class="blocker-icon" aria-hidden="true">M</span>
+                        <div class="blocker-info">
+                            <label for="block-meta-pixel">Meta Pixel</label>
+                            <p>Requests allowed</p>
+                        </div>
+                        <input type="checkbox" id="block-meta-pixel" name="block-meta-pixel" class="blocker-toggle" aria-label="Block Meta Pixel">
+                    </div>
+                </div>
+            </div>
         </section>
         <!-- Settings Tab: displays the content of the selected tab -->
-        <section id="settings" class="page" style="display: none;">
+        <section id="settings" class="page" hidden>
             <h2>Settings</h2>
             <p class="description">Configure automatic activation</p>
             <div id="settings-content"></div>
