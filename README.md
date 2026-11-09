@@ -61,7 +61,7 @@ extension won't load until you build it.
 * Remaining trackers
 * Blocker, Error, and Settings tab
 
-### Running CI test suite locally
+## Running CI test suite locally
 
 1. Change directory to working directory.
 2. Run `npm ci` (clean install).
