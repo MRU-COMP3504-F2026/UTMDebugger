@@ -146,8 +146,8 @@ buttons.forEach((button) => {
             }
         });
     });
-
-    buttons.forEach((navButton) => {
+      // This is the code that broke the Popup. It was removed to fix the issue, but it can be re-added if needed.
+      /*buttons.forEach((navButton) => {
       const isSelected = navButton === button;
 
       navButton.classList.toggle("active", isSelected);
@@ -157,7 +157,7 @@ buttons.forEach((button) => {
       } else {
         navButton.removeAttribute("aria-current");
       }
-    });
+    });*/
   });
 
 // ---------- Errors tab ----------
