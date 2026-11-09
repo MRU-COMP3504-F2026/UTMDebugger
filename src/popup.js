@@ -1,16 +1,18 @@
 import {database} from "./utils/dbhelper.js";
 import {readUTM, UTM_PARAMETERS} from "./utils/utm.js";
 
+// Connect to the background script to keep the popup alive while it's open
 if (globalThis.chrome?.runtime?.id) {
   chrome.runtime.connect({ name: "popup" });
 }
-
+// Get the current page URL using the Chrome Tabs API
 async function currentPageURL() {
   if (!globalThis.chrome?.runtime?.id) return null;
   const [tab] = await chrome.tabs.query({ active: true, currentWindow: true });
   return tab?.url ?? null;
 }
 
+// Describe the UTM parameters in a human-readable format
 export function describeUTM(fields) {
   return Object.entries(UTM_PARAMETERS)
     .filter(([, field]) => fields?.[field])
@@ -18,6 +20,7 @@ export function describeUTM(fields) {
     .join(", ");
 }
 
+// Determine the state of a tracker based on its requests and the page's UTM parameters
 export function trackerState(name, requests, pageUTM) {
   if (!requests.length) return { name, description: "Not detected", status: "Missing" };
   const [latest] = requests;
@@ -29,6 +32,7 @@ export function trackerState(name, requests, pageUTM) {
   return { name, description: `Reported ${reported}`, status: "Healthy" };
 }
 
+// Load trackers from the database and determine their state based on the page's UTM parameters
 async function loadTrackers(pageURL, pageUTM) {
   const trackingDomains = await database.list("trackingDomains");
   const history = await database.getRequestHistory(pageURL ? { pageURL } : {});
@@ -41,7 +45,9 @@ async function loadTrackers(pageURL, pageUTM) {
   });
 }
 
+// Get the current page URL and its UTM parameters, then update the popup UI accordingly
 const pageURL = await currentPageURL();
+// Read the UTM parameters from the current page URL
 const pageUTM = pageURL ? readUTM(pageURL) : null;
 
 if (pageURL) {
@@ -56,6 +62,7 @@ if (utmParameters && pageURL) {
   : "This page has no UTM parameters.";
 }
 
+// Load the trackers and display their status in the popup UI
 const trackers = await loadTrackers(pageURL, pageUTM);
 const statusConfig = {
   Healthy: {

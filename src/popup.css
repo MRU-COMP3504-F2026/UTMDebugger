@@ -1,5 +1,6 @@
 @import "tailwindcss";
 
+/* Shared color tokens used by the popup and utility classes. */
 @theme {
   --color-brand: #176b4c;
   --color-brand-light: #e3f1eb;
@@ -16,6 +17,7 @@
 }
 
 @layer components {
+  /* Base colors and the fixed-size extension popup layout. */
   :root {
     --green: #176b4c;
     --green-light: #e3f1eb;
@@ -41,6 +43,7 @@
     font-family: Arial, sans-serif;
   }
   
+  /* .header lays out the popup's brand and page information. */
   .header {
     display: flex;
     justify-content: space-between;
@@ -49,12 +52,14 @@
     border-bottom: 1px solid var(--border);
   }
   
+  /* .brand aligns the logo with the product title. */
   .brand {
     display: flex;
     align-items: center;
     gap: 12px;
   }
   
+  /* .logo styles the square brand mark. */
   .logo {
     width: 40px;
     height: 40px;
@@ -72,12 +77,14 @@
     font-size: 18px;
   }
   
+  /* .domain displays the hostname of the active page. */
   .domain {
     margin: 5px 0 0;
     color: var(--muted);
     font-size: 12px;
   }
   
+  /* .badge displays a compact status indicator. */
   .badge {
     padding: 7px 10px;
     border-radius: 20px;
@@ -88,12 +95,14 @@
     white-space: nowrap;
   }
   
+  /* .navigation lays out the tab buttons in one row. */
   .navigation {
     display: flex;
     padding: 0 16px;
     border-bottom: 1px solid var(--border);
   }
   
+  /* .nav-button styles each tab control. */
   .nav-button {
     flex: 1;
     padding: 16px 0;
@@ -105,16 +114,19 @@
     cursor: pointer;
   }
   
+  /* .nav-button.active marks the currently selected tab. */
   .nav-button.active {
     color: var(--green);
     border-bottom-color: var(--green);
   }
   
+  /* .nav-button:focus-visible makes keyboard focus easy to see. */
   .nav-button:focus-visible {
     outline: 2px solid var(--green);
     outline-offset: -4px;
   }
   
+  /* .content provides the scrollable area below the tabs. */
   .content {
     flex: 1;
     min-height: 0;
@@ -122,6 +134,7 @@
     padding: 20px;
   }
   
+  /* .section-heading aligns a heading and its associated control. */
   .section-heading {
     display: flex;
     align-items: center;
@@ -135,6 +148,7 @@
     font-weight: normal;
   }
   
+  /* .description styles supporting text beneath section headings. */
   .description {
     margin: 9px 0 18px;
     color: var(--muted);
@@ -142,6 +156,7 @@
     line-height: 1.5;
   }
   
+  /* .legend lays out the tracker status key. */
   .legend {
     display: flex;
     flex-wrap: wrap;
@@ -151,12 +166,14 @@
     font-size: 10px;
   }
   
+  /* .legend span aligns each legend marker with its label. */
   .legend span {
     display: inline-flex;
     align-items: center;
     gap: 5px;
   }
   
+  /* .dot creates a circular tracker status marker. */
   .dot {
     display: inline-block;
     flex-shrink: 0;
@@ -165,14 +182,17 @@
     border-radius: 50%;
   }
   
+  /* .green marks a healthy tracker status. */
   .green {
     background: #238b62;
   }
   
+  /* .red marks an error tracker status. */
   .red {
     background: var(--red);
   }
   
+  /* .gray marks a missing tracker status. */
   .gray {
     background: var(--gray);
   }
@@ -183,6 +203,7 @@
     gap: 18px;
   }
   
+  /* .tracker-group contains trackers that share a health status. */
   .tracker-group {
     border: 1px solid var(--border);
     border-radius: 12px;
@@ -190,6 +211,7 @@
     padding: 12px;
   }
   
+  /* .group-header aligns a status marker with its group label. */
   .group-header {
     display: flex;
     align-items: center;
@@ -200,12 +222,14 @@
     font-weight: 700;
   }
   
+  /* .tracker-grid arranges tracker cards in two columns. */
   .tracker-grid {
     display: grid;
     grid-template-columns: repeat(2, minmax(0, 1fr));
     gap: 10px;
   }
   
+  /* .tracker-card contains one tracker's name, details, and status. */
   .tracker-card {
     display: flex;
     flex-direction: column;
@@ -217,12 +241,14 @@
     background: white;
   }
   
+  /* The card heading styles the tracker's name. */
   .tracker-card h3 {
     margin: 0;
     font-size: 12px;
     line-height: 1.35;
   }
   
+  /* .tracker-description styles details shown inside a tracker card. */
   .tracker-card .tracker-description {
     margin: 6px 0 0;
     color: var(--muted);
@@ -231,6 +257,7 @@
     overflow-wrap: anywhere;
   }
 
+  /* #utm-parameters displays UTM values found on the active page. */
   #utm-parameters {
     margin-top: 9px;
     color: var(--muted);
@@ -238,6 +265,7 @@
     overflow-wrap: anywhere;
   }
 
+  /* .tracker-chip displays the health label on a tracker card. */
   .tracker-card .tracker-chip {
     align-self: flex-start;
     margin-top: 12px;
@@ -247,33 +275,40 @@
     font-weight: 700;
   }
   
+  /* .tracker-card--healthy identifies a healthy tracker card. */
   .tracker-card--healthy {
     border-color: rgba(23, 107, 76, 0.25);
   }
   
+  /* The healthy chip uses the brand color palette. */
   .tracker-card--healthy .tracker-chip {
     background: var(--green-light);
     color: var(--green);
   }
   
+  /* .tracker-card--error identifies a tracker with mismatched data. */
   .tracker-card--error {
     border-color: rgba(206, 70, 75, 0.25);
   }
   
+  /* The error chip uses the warning color palette. */
   .tracker-card--error .tracker-chip {
     background: rgba(206, 70, 75, 0.1);
     color: var(--red);
   }
   
+  /* .tracker-card--missing identifies an undetected tracker. */
   .tracker-card--missing {
     border-color: rgba(146, 158, 153, 0.5);
   }
   
+  /* The missing chip uses muted colors. */
   .tracker-card--missing .tracker-chip {
     background: rgba(146, 158, 153, 0.12);
     color: var(--muted);
   }
   
+  /* .footer separates app information from the scrollable content. */
   .footer {
     display: flex;
     justify-content: space-between;
@@ -284,6 +319,7 @@
     font-size: 10px;
   }
 
+  /* Dark color overrides follow the user's system appearance preference. */
   @media (prefers-color-scheme: dark) {
     :root {
       color-scheme: dark;
@@ -295,14 +331,139 @@
       --border: #333b38;
     }
 
+    /* .tracker-card switches to a dark surface in dark mode. */
     body,
     .tracker-card {
       background: #1b1f1e;
     }
 
+    /* .tracker-group and .footer use a slightly lighter dark surface. */
     .tracker-group,
     .footer {
       background: #222826;
     }
+  }
+}
+/* #blocking .description adds spacing before the blocking controls. */
+#blocking .description {
+  margin-bottom: 16px;
+}
+
+/* .blocking-notice explains the default blocking behavior. */
+.blocking-notice {
+  margin: 0 0 8px;
+  padding: 14px 12px;
+  border-radius: 10px;
+  background: #f1f5f3;
+  color: var(--muted);
+  font-size: 13px;
+  line-height: 1.4;
+}
+
+/* .blocker-row aligns a provider's icon, details, and toggle. */
+.blocker-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  min-height: 72px;
+  padding: 12px 0;
+  border-top: 1px solid var(--border);
+}
+
+/* .blocker-icon displays the provider's initial in a bordered tile. */
+.blocker-icon {
+  display: grid;
+  width: 42px;
+  height: 42px;
+  flex: 0 0 42px;
+  place-items: center;
+  border: 1px solid var(--border);
+  border-radius: 9px;
+  background: #f5f8f6;
+  color: var(--green);
+  font-size: 16px;
+  font-weight: bold;
+}
+
+/* .blocker-info lets provider text use the available row space. */
+.blocker-info {
+  min-width: 0;
+  flex: 1;
+}
+
+/* The .blocker-info label names the provider and remains clickable. */
+.blocker-info label {
+  font-size: 14px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+/* The .blocker-info paragraph shows whether requests are allowed. */
+.blocker-info p {
+  margin: 5px 0 0;
+  color: var(--muted);
+  font-size: 12px;
+}
+
+/* .blocker-toggle styles the checkbox as a switch track. */
+.blocker-toggle {
+  appearance: none;
+  width: 44px;
+  height: 26px;
+  margin: 0;
+  flex: 0 0 44px;
+  border: 0;
+  border-radius: 999px;
+  background: #cbd2ce;
+  position: relative;
+  cursor: pointer;
+  transition: background-color 150ms ease;
+}
+
+/* The switch thumb moves when the checkbox is selected. */
+.blocker-toggle::before {
+  position: absolute;
+  top: 4px;
+  left: 4px;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: white;
+  box-shadow: 0 1px 3px rgb(0 0 0 / 20%);
+  content: "";
+  transition: transform 150ms ease;
+}
+
+/* A checked .blocker-toggle uses the brand color. */
+.blocker-toggle:checked {
+  background: var(--green);
+}
+
+/* The checked switch thumb slides to the right. */
+.blocker-toggle:checked::before {
+  transform: translateX(18px);
+}
+
+/* Keyboard focus remains visible on the custom switch. */
+.blocker-toggle:focus-visible {
+  outline: 2px solid var(--green);
+  outline-offset: 3px;
+}
+
+@media (prefers-color-scheme: dark) {
+  /* Blocking notice and provider icon use dark-mode surfaces. */
+  .blocking-notice,
+  .blocker-icon {
+    background: #222826;
+  }
+
+  /* The unchecked switch track is lighter against the dark background. */
+  .blocker-toggle {
+    background: #4a5550;
+  }
+
+  /* The checked switch keeps the brand accent in dark mode. */
+  .blocker-toggle:checked {
+    background: var(--green);
   }
 }
