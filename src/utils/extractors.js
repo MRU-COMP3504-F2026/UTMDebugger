@@ -1,6 +1,5 @@
 import { database } from '../utils/dbhelper.js';
 import { pageURL } from './page.js';
-import {metaPixelExtractor as readMetaPixelRequest} from '../extractors/meta-pixel-extractor.js';
 
 export const extractorFunctions = {
     googleAnalyticsExtractor(database, details){
@@ -166,7 +165,96 @@ export const extractorFunctions = {
         //extracting u data
         return checkConsistentUData(database);
     },
-    metaPixelExtractor(database, details){
-        return readMetaPixelRequest(details);
+    async metaPixelExtractor(database, details){
+        function hostOf(url){
+            let host = null;
+            try{
+                host = new URL(url).host;
+            } catch(e){
+                // do something idk
+            }
+            return host;
+        }
+
+        function checkConsistentUData(callHistory, currURL, userID){        
+            const currDomain = hostOf(currURL);
+            if(currDomain === null) return true;
+
+            // Check history for descrepencies in User ID
+            for(const [key,value] of Object.entries(callHistory)){
+                // If the domain doesn't match, check the next historic url
+                if (hostOf(key) !== currDomain) continue;
+                if (key === currURL) continue;
+
+                // If the previous url didn't track Meta Pixel then the previous page the user was
+                // on for the same domain is missing the tracking code when this one has it
+                if (!value["Meta Pixel"]){
+                    return {
+                        isError:true,
+                        trackingSoftware:"Meta Pixel",
+                        errorMSG:`The page '${key}' does not contain Meta Pixel tracking code while this one does`,
+                        type:"missingCode",
+                        currPage:currURL,
+                        errorPage:key
+                    }
+                }
+                
+                // Most recent Meta Pixel request if there is one
+                const pastRequest = value["Meta Pixel"]?.[0];
+                if (typeof pastRequest?.userID !== 'string') continue;
+
+                // If historic page userID doesn't match the current page url it means
+                // something wrong happened and return an error object
+                if(pastRequest.userID !== userID){
+                    return {
+                        isError:true,
+                        trackingSoftware:"Meta Pixel",
+                        errorMSG:`Meta Pixel browser ID for page ${key} does not match the browser ID for the current page ${currURL}`,
+                        type:"UIDMismatch",                        
+                        currPage:currURL,
+                        errorPage:key,
+                        errorPageVal:pastRequest.userID,
+                        currPageVal:userID
+                    }
+                }
+            }
+            return true;
+        }
+
+        // extracting u data
+        const url = new URL(details.url);
+        // facebook.com also serves like buttons and embeds, the Pixel only sends to /tr
+        // if it isn't a Pixel event, return null to skip it because we don't care about it
+        if (url.pathname !== '/tr' && !url.pathname.startsWith('/tr/')) return null;
+
+        // Collect the parameters, the query string wins over a form body
+        const params = new Map(url.searchParams);
+        const formData = details.requestBody?.formData;
+        if (formData){
+            for(const [key,values] of Object.entries(formData)){
+                if(!params.has(key) && values.length > 0) params.set(key, values[0]);
+            }
+        }
+
+        // fbp is the browser id that Meta keeps in the _fbp cookie, it's saved as the user id
+        const userID = params.get('fbp') ?? null;
+        const metaData = {
+            userID:userID,
+            pixelId:params.get('id') ?? null,
+            eventName:params.get('ev') ?? null,
+            fbc:params.get('fbc') ?? null
+        };
+ 
+        // Without a user or page id there is nothing to compare
+        const currURL = await pageURL(details);
+        let consistent = true;
+        if (userID !== null && currURL !== null){
+            // Query the db
+            const callHistory = await database.getRequestHistory();
+            consistent = checkConsistentUData(callHistory, currURL, userID);
+        }
+
+        if (consistent !== true) return {...metaData, ...consistent};
+        return {isError:false, ...metaData};
     }
 }
