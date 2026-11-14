@@ -73,7 +73,7 @@ export const extractorFunctions = {
                         trackingSoftware:"Microsoft Clarity",
                         errorMSG:`The page '${key}' does not contain Microsoft Clarity tracking code while this one does`,
                         type:"missingCode",
-                        currPage:currURL,
+                        pageDetected:currURL,
                         errorPage:key
                     }
                 } 
@@ -86,10 +86,10 @@ export const extractorFunctions = {
                         trackingSoftware:"Microsoft Clarity",
                         errorMSG:`Microsoft Clarity user ID for page ${key} does not match the user ID for the current page ${currURL}`,
                         type:"UIDMismatch", 
-                        currPage: currURL,
+                        pageDetected: currURL,
                         errorPage: key,
-                        errorPageVal: value["Microsoft Clarity"][0].userID,
-                        currPageVal: userID
+                        errorPageUID: value["Microsoft Clarity"][0].userID,
+                        pageDetectedUID: userID
                     }
                 } 
                 // if no error and data already found, continue to save time

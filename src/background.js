@@ -49,7 +49,7 @@ chrome.webRequest.onBeforeRequest.addListener(
             const fields = await runFuncWithTimeout(extractor, [db, details], 2000);
             if(fields.isError && fields.isError === true){
                 // if there is an error 
-                await db.add('error', fields)
+                await db.add('error', fields);
             } else {
                 // handle fields if no error
                 if (fields !== undefined && (fields === null || typeof fields !== 'object' || Array.isArray(fields))) {
