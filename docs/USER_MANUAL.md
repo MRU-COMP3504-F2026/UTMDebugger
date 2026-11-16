@@ -78,19 +78,77 @@ Other Chromium browsers (Edge, Brave) may work but are not tested.
 
 ## Use
 
+1. Open the page with UTM parameters in the address.
+2. Click the extension icon and stay on the **Status** tab.
+3. The popup has four tabs: **Status**, **Errors**, **Blocking** and **Settings**. Only Status is available at the moment.
+
 ### Status tab
+
+Shows the current status for each [supported tracker](#supported-trackers) for the page in the current tab.
+
+| Status | Colour | Meaning |
+| --- | --- |
+| **Healthy** | Green | The tracker sent a request and its UTM values match the page address. |
+| **Error** | Red | The tracker sent a request but its UTM values are missing or different from the page address. |
+| **Not detected** | Grey | No request to this tracker was seen on this page. |
+
+Each detected tracker also shows the latest UTM values it received, along with any provider specific details available
+- **Microsoft Clarity:** user ID
+- **Meta Pixel:** browser ID (`fbp`), pixel ID, event name and click ID (`fbc`)
+
+If a tracker you expect shows **Not detected**, check that no ad blocker or privacy extension is blocking it, then reload the page.
+Some sites have encrypted parameters, in which case the tracker will show **Not detected** regardless
 
 ### Errors tab (WIP)
 
+A log of problems found while you browse. Each entry will show the tracker, the error type (session or user ID), the date and time, and what changed from the previous page. You can export the log to a text file.
+
 ### Blocking tab (WIP)
+
+Turn individual trackers off for the current page so you that UTM cannot track you through that specific provider
+Blocking will be off by default.
 
 ### Settings tab (WIP)
 
+A **whitelist** of domains. The extension will enable itself automatically on these domains instead of on every site.
+
 ### Other planned features (WIP)
+
+- Provider details for Google Analytics 4, Google Ads and HubSpot.
+- A badge on the toolbar icon showing how many domains are actively tracking on the page.
+- A separate, movable window for the debugger.
 
 ## Privacy
 
+- UTM Debugger reads the web requests your browser sends but only keeps requests to the tracking domains listed in [Supported trackers](#supported-trackers).
+- Saved records include the tracker, page address, UTM values and provider IDs.
+- Everything is stored locally in your browser. The extension has no backend and does not send data to any server.
+- Removing the extension deletes its stored data.
+
 ## Update or uninstall
+
+### Update
+
+1. Open a terminal in the `UTMDebugger` folder.
+2. Pull the latest changes:
+
+   ```bash
+   git pull
+   ```
+
+3. Reinstall dependencies and rebuild:
+
+   ```bash
+   npm ci
+   npm run build
+   ```
+
+4. Go to `chrome://extensions` and click **reload** on the **UTMDebugger** card.
+
+### Uninstall
+
+1. Go to `chrome://extensions`.
+2. Click **Remove** on the **UTMDebugger** card and confirm.
 
 ## How to report a bug
 
