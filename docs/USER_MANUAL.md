@@ -98,7 +98,6 @@ The popup only shows requests seen after the extension was loaded. If you instal
 
 The toolbar icon changes when tracking requests are detected on the page.
 
-
 ## Use
 
 The popup has four tabs: **Status**, **Errors**, **Blocking** and **Settings**. Only Status is available at the moment.
@@ -108,7 +107,7 @@ The popup has four tabs: **Status**, **Errors**, **Blocking** and **Settings**. 
 Shows the current status for each [supported tracker](#supported-trackers) for the page in the current tab.
 
 | Status | Colour | Meaning |
-| --- | --- |
+| --- | --- | --- |
 | **Healthy** | Green | The tracker sent a request and its UTM values match the page address. |
 | **Error** | Red | The tracker sent a request but its UTM values are missing or different from the page address. |
 | **Not detected** | Grey | No request to this tracker was seen on this page. |
