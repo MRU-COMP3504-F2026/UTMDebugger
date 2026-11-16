@@ -47,21 +47,27 @@ chrome.webRequest.onBeforeRequest.addListener(
             if (typeof extractor !== 'function') throw new Error(`No extractor named ${name} exists in extractors.js.`);
             // call the extractor with the database and details
             const fields = await runFuncWithTimeout(extractor, [db, details], 2000);
-            if (fields !== undefined && (fields === null || typeof fields !== 'object' || Array.isArray(fields))) {
-                throw new TypeError(`${name} must return an object of request fields, or nothing.`);
+            if(fields.isError && fields.isError === true){
+                // if there is an error 
+                await db.add('error', fields);
+            } else {
+                // handle fields if no error
+                if (fields !== undefined && (fields === null || typeof fields !== 'object' || Array.isArray(fields))) {
+                    throw new TypeError(`${name} must return an object of request fields, or nothing.`);
+                }
+                await db.saveRequest({
+                    requestId: details.requestId,
+                    url: details.url,
+                    method: details.method,
+                    timeStamp: details.timeStamp,
+                    tabId: details.tabId,
+                    frameId: details.frameId,
+                    ...(details.initiator === undefined ? {} : {initiator: details.initiator}),
+                    pageURL: await pageURL(details),
+                    ...findUTM(details),
+                    ...fields
+                });
             }
-            await db.saveRequest({
-                requestId: details.requestId,
-                url: details.url,
-                method: details.method,
-                timeStamp: details.timeStamp,
-                tabId: details.tabId,
-                frameId: details.frameId,
-                ...(details.initiator === undefined ? {} : {initiator: details.initiator}),
-                pageURL: await pageURL(details),
-                ...findUTM(details),
-                ...fields
-            });
         } catch(e){
             log.error('Request handling failed.', e);
         }

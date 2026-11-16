@@ -17,6 +17,7 @@ export const STORE_KEYS = {
   requests: 'id',
   lastSeenValues: 'name',
   settings: 'key',
+  error:'id'
 };
 
 /**
@@ -84,5 +85,32 @@ export function initializeSchema(database) {
   }
   for (const setting of DEFAULT_SETTINGS) {
     settings.add(setting);
+  }
+
+  // To track errors with tracking software we will store them in the table 'error'
+  // - trackingSoftware: the name of the tracking software involved in the error
+  // - errorMSG: the error message provided
+  // - type: type of error (currently only two types: "missingCode", and "UIDMismatch")
+  // - pageDetected: the page where the error occured
+  // - errorPage: the page that was compared against the page detected
+  // - pageDetectedVal: if applicable, the page detected userID
+  // - errorPageVal: if applicable, the compared page userID
+  const errorLogIndexes = [
+    'trackingSoftware',
+    'errorMSG',
+    'type',
+    'pageDetected',
+    'errorPage',
+    'pageDetectedUID',
+    'errorPageUID'
+  ]
+  // Create the error table
+  const errorLog = database.createObjectStore('error', {
+    keyPath: STORE_KEYS.error,
+    autoIncrement: true,
+  });
+  // add all fields to the error table
+  for (const field of errorLogIndexes) {
+    errorLog.createIndex(field, field);
   }
 }
