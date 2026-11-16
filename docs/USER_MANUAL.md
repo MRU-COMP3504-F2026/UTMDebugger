@@ -73,14 +73,21 @@ Other Chromium browsers (Edge, Brave) may work but are not tested.
 5. In Chrome, go to `chrome://extensions`.
 6. Turn on **Developer mode** (top right).
 7. Click **Load unpacked** and select the `UTMDebugger` folder, the one that contains `manifest.json`. Do not select `dist/`.
+8. (Optional) Click the puzzle-piece icon in the Chrome toolbar, and pin the extension.
 
 ## Run
 
+1. Once [Installed](#install), open the page with UTM parameters in the address.
+2. Wait for the page to finish loading, then click the UTM Debugger icon to open the popup.
+
+The popup only shows requests seen after the extension was loaded. If you installed or reloaded the extension with the page already open, reload the page first.
+
+The toolbar icon changes when tracking requests are detected on the page.
+
+
 ## Use
 
-1. Open the page with UTM parameters in the address.
-2. Click the extension icon and stay on the **Status** tab.
-3. The popup has four tabs: **Status**, **Errors**, **Blocking** and **Settings**. Only Status is available at the moment.
+The popup has four tabs: **Status**, **Errors**, **Blocking** and **Settings**. Only Status is available at the moment.
 
 ### Status tab
 
