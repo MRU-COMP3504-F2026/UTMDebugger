@@ -16,6 +16,14 @@ Features that are not finished in the current release ([`v1.0.0-beta`](https://g
 
 ## Overview
 
+UTM Debugger is a Google Chrome extension that helps users identify website tracking software and check whether its outgoing requests contain the same UTM campaign values as the current page’s URL. UTM parameters describe how visitors arrive at a website, including the campaign’s source, medium, and name. Keeping these values consistent helps businesses understand which marketing campaigns bring visitors to their websites.
+
+Tracking issues can occur after website updates or changes to tracking configurations. Investigating these problems often requires manually inspecting network requests and comparing campaign values. UTM Debugger simplifies this process by displaying information about supported trackers in one interface, helping users identify discrepancies more quickly.
+
+The Status tab groups trackers as Healthy, Error, or Not detected based on observed requests and their UTM values. Users can review the reported campaign information and identify missing or mismatched values. These checks help reveal potential tracking issues, although they do not confirm that a tracking platform successfully received or attributed the data. Collected debugging information is stored locally in the browser.
+
+The extension also includes Errors, Blocking, and Settings tabs, which are currently works in progress. These features are intended to provide diagnostic history and log exports, controls for blocking supported trackers, and domain-based activation settings. Together, they aim to make website tracking easier to inspect and manage for developers, marketers, and everyday users interested in privacy.
+
 ### Supported trackers
 
 | Tracker | Detected by requests to | Status |
@@ -28,6 +36,12 @@ Features that are not finished in the current release ([`v1.0.0-beta`](https://g
 | LinkedIn Insight Tag | `px.ads.linkedin.com` | WIP, not enabled. |
 
 ## Who this is for
+
+Website developers and testers: Check tracking behaviour after website changes and investigate missing or mismatched UTM values.
+
+Digital marketers and analysts: Verify that campaign information is included correctly in supported tracking requests.
+
+Everyday users interested in privacy: See which supported trackers send requests from a page. The planned Blocking tab will let users control requests to supported tracking providers.
 
 ## Prerequisites
 
