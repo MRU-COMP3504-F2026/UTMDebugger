@@ -102,6 +102,17 @@ The toolbar icon changes when tracking requests are detected on the page.
 
 The popup has four tabs: **Status**, **Errors**, **Blocking** and **Settings**. Only Status is available at the moment.
 
+### Available Example Websites
+
+Because only some websites contain the tracking code covered in this project, below is a list of websites that contain at least one of the tracking software covered in this project.
+
+1. https://www.arcurve.com/
+2. https://www.shanehomes.com/
+3. https://spxcooling.com/
+4. https://www.calgaryhumane.ca/ 
+5. https://www.atb.com/
+6. https://www.safecheck1.com/
+
 ### Status tab
 
 Shows the current status for each [supported tracker](#supported-trackers) for the page in the current tab.
@@ -125,7 +136,7 @@ A log of problems found while you browse. Each entry will show the tracker, the 
 
 ### Blocking tab (WIP)
 
-Turn individual trackers off for the current page so you that UTM cannot track you through that specific provider
+Turn individual trackers off for the current page so that the specified tracking software cannot track you
 Blocking will be off by default.
 
 ### Settings tab (WIP)
