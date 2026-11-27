@@ -186,7 +186,11 @@ async function getErrors() {
 
 function renderErrors(items) {
   const list = document.querySelector("#error-messages");
-  list.replaceChildren();
+    if (!list) return;
+    list.replaceChildren();
+
+  const count = document.querySelector("#error-count");
+    if (count) count.textContent = `${items.length} issue${items.length === 1 ? "" : "s"}`;
 
   document.querySelector("#error-count").textContent =
     `${items.length} issue${items.length === 1 ? "" : "s"}`;
@@ -248,7 +252,7 @@ let domains = ["example.com", "ads.example.net"];
 
 function renderDomains() {
     const list = document.querySelector("#domain-list");
-    list.replaceChildren();
+      if (!list) return;  
 
     if (domains.length === 0) {
         list.append(createEl("li", "py-4 text-[13px] text-muted dark:text-[#9aa7a1]", "No domains added."));
@@ -278,8 +282,8 @@ function addDomain() {
     input.value = "";
 }
 
-document.querySelector("#add-domain").addEventListener("click", addDomain());
-document.querySelector("#domain-input").addEventListener("keydown", (event) => {
+document.querySelector("#add-domain")?.addEventListener("click", addDomain());
+document.querySelector("#domain-input")?.addEventListener("keydown", (event) => {
     if (event.key === "Enter") addDomain();
 });
 
