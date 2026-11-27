@@ -196,7 +196,7 @@ async function getErrors() {
   ];
 }
 
-document.querySelector("#export-errors").addEventListener("click", async () => {
+document.querySelector("#export-errors")?.addEventListener("click", async () => {
   const text = formatErrorLog(await getErrors());
   const url = URL.createObjectURL(new Blob([text], { type: "text/plain" }));
   const link = document.createElement("a");
