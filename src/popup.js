@@ -1,5 +1,6 @@
 import {database} from "./utils/dbhelper.js";
 import {readUTM, UTM_PARAMETERS} from "./utils/utm.js";
+import {formatErrorLog} from "./utils/error-exporter.js";
 
 // Connect to the background script to keep the popup alive while it's open
 if (globalThis.chrome?.runtime?.id) {
@@ -172,16 +173,53 @@ function createEl(tag, className, text) {
 
 // Temporary dummy data. When the real log exists, only this function changes to fetch the data from the background script.
 async function getErrors() {
+  // TODO: replace with a call to the background script to fetch the actual error log data
   return [
-  {
-    title: "Hubspot source changed",
-    message: "Hubspot recorded a different original source for this visitor than the one reported earlier.",
-    userId: "hubspotutk_8f3a91c2",
-    before: "Paid Search",
-    current: "Direct Traffic",
-    time: "Today at 10:15 AM"
-  }
-];
+    {
+      isError: true,
+      trackingSoftware: "Microsoft Clarity",
+      type: "UIDMismatch",
+      errorMSG: "Microsoft Clarity user ID for page https://yayland.com/1 does not match the user ID for the current page https://yayland.com/2",
+      pageDetected: "https://yayland.com/2",
+      errorPage: "https://yayland.com/1",
+      errorPageUID: "whatever",
+      pageDetectedUID: "something else",
+    },
+    {
+      isError: true,
+      trackingSoftware: "Meta Pixel",
+      type: "missingCode",
+      errorMSG: "The page 'https://yayland.com/1' does not contain Meta Pixel tracking code while this one does",
+      pageDetected: "https://yayland.com/2",
+      errorPage: "https://yayland.com/1"
+    }
+  ];
+}
+
+document.querySelector("#export-errors").addEventListener("click", async () => {
+  const text = formatErrorLog(await getErrors());
+  const url = URL.createObjectURL(new Blob([text], { type: "text/plain" }));
+  const link = document.createElement("a");
+  link.href = url;
+  link.download = "UTM Debugger error log.txt";
+  link.click();
+  URL.revokeObjectURL(url);
+});
+
+const ERROR_TYPES = {
+  UIDMismatch: "User ID mismatch",
+  missingCode: "Tracking code missing",
+};
+
+function toCard(error) {
+  return {
+    title: `${error.trackingSoftware}: ${ERROR_TYPES[error.type] ?? "Tracking issue"}`,
+    message: error.errorMSG ?? "",
+    userId: error.pageDetectedUID ?? "n/a",
+    before: error.errorPageUID ?? "n/a",
+    current: error.pageDetectedUID ?? "n/a",
+    time: ""
+  };
 }
 
 function renderErrors(items) {
@@ -236,7 +274,7 @@ function renderErrors(items) {
 }
 
 async function loadErrors() {
-  renderErrors(await getErrors());
+  renderErrors((await getErrors()).map(toCard));
 }
 
 loadErrors();
