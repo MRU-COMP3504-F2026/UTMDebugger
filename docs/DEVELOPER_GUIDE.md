@@ -33,35 +33,66 @@ git checkout v1.0.0-beta
 Prerequisites (Node.js 22.12 or later, npm 10 or later, Chrome) are listed in the [user manual](USER_MANUAL.md#prerequisites).
 
 ## Directory layout
+The tree shows the main folders and entry points on main. Running npm run build also creates dist/ at the repository root.
+
+UTMDebugger/
+├── .github/
+│   ├── ISSUE_TEMPLATE/
+│   ├── pull_request_template.md
+│   └── workflows/
+│       └── ci.yml
+├── docs/
+│   ├── DEVELOPER_GUIDE.md
+│   └── USER_MANUAL.md
+├── manifest.json
+├── package.json
+├── public/
+│   ├── icons/
+│   └── logo.png
+├── reports/
+├── src/
+│   ├── background.js
+│   ├── database/
+│   ├── popup.css
+│   ├── popup.html
+│   ├── popup.js
+│   └── utils/
+├── tests/
+│   ├── index.html
+│   ├── index.js
+│   ├── run.mjs
+│   ├── suites/
+│   └── testing.js
+└── vite.config.js
 
 | Path | Contents |
 | --- | --- |
-| `manifest.json` | Chrome extension manifest (Manifest V3). Points to the built files in `dist/`. |
-| `package.json`, `package-lock.json` | npm scripts and development dependencies. |
-| `vite.config.js` | Build configuration. Entry points are `src/background.js` and `src/popup.html`. |
-| `src/background.js` | Service worker. Listens to every web request, keeps the tracking ones and saves them to the database. Switches the toolbar icon. |
-| `src/popup.html`, `src/popup.js`, `src/popup.css` | UI: Status, Errors, Blocking and Settings tabs. Tailwind CSS is used through `popup.css`. |
-| `src/database/schema.js` | IndexedDB name, version, object stores and indexes. |
-| `src/database/defaults.js` | Default tracking domains (one per provider) and default settings, added when the database is first created. |
-| `src/database/validation.js` | Checks records before they are written. |
-| `src/database/manager.js` | `Database` class: open, close, CRUD, request history and settings. |
-| `src/utils/dbhelper.js` | The single shared `Database` instance used by the extension. |
-| `src/utils/extractors.js` | One extractor function per provider. Reads provider-specific fields (user ID, pixel ID) from a request. |
-| `src/utils/utm.js` | Shared UTM parser used for every provider. |
-| `src/utils/page.js` | Finds the page a request was sent from. |
-| `src/utils/logger.js` | Labelled console logger. |
-| `public/` | Static files copied into `dist/` unchanged (logo, toolbar icons). |
-| `tests/testing.js` | The test framework: `suite`, `test`, and assertions. |
-| `tests/index.js` | List of test files to run. |
-| `tests/index.html` | Test page that loads `index.js`. |
-| `tests/run.mjs` | Test harness: Starts Vite, opens the test page in headless Chromium with Playwright, and sets the exit code. |
-| `tests/suites/` | Test files, one per source file. |
-| `docs/` | User manual and this developer guide. |
-| `reports/` | Weekly team status reports, named `YYYYMMDD.md`. |
-| `.github/workflows/ci.yml` | GitHub Actions CI workflow. |
 | `.github/ISSUE_TEMPLATE/` | Bug report template. |
+| `.github/workflows/ci.yml` | GitHub Actions CI workflow. |
 | `.github/pull_request_template.md` | Pull request checklist. |
 | `dist/` | Build output. |
+| `docs/` | User manual and this developer guide. |
+| `public/` | Static files copied into `dist/` unchanged (logo, toolbar icons). |
+| `reports/` | Weekly team status reports, named `YYYYMMDD.md`. |
+| `src/database/defaults.js` | Default tracking domains (one per provider) and default settings, added when the database is first created. |
+| `src/database/manager.js` | `Database` class: open, close, CRUD, request history and settings. |
+| `src/database/schema.js` | IndexedDB name, version, object stores and indexes. |
+| `src/database/validation.js` | Checks records before they are written. |
+| `src/utils/dbhelper.js` | The single shared `Database` instance used by the extension. |
+| `src/utils/extractors.js` | One extractor function per provider. Reads provider-specific fields (user ID, pixel ID) from a request. |
+| `src/utils/logger.js` | Labelled console logger. |
+| `src/utils/page.js` | Finds the page a request was sent from. |
+| `src/utils/utm.js` | Shared UTM parser used for every provider. |
+| `src/background.js` | Service worker. Listens to every web request, keeps the tracking ones and saves them to the database. Switches the toolbar icon. |
+| `src/popup.css`, `src/popup.html`, `src/popup.js` | UI: Status, Errors, Blocking and Settings tabs. Tailwind CSS is used through `popup.css`. |
+| `tests/suites/` | Test files, one per source file. |
+| `tests/index.html` | Test page that loads `index.js`. |
+| `tests/index.js` | List of test files to run. |
+| `tests/run.mjs` | Test harness: Starts Vite, opens the test page in headless Chromium with Playwright, and sets the exit code. |
+| `tests/testing.js` | The test framework: `suite`, `test`, and assertions. |
+| `manifest.json` | Chrome extension manifest (Manifest V3). Points to the built files in `dist/`. |
+| `package-lock.json`, `package.json` | npm scripts and development dependencies. |
+| `vite.config.js` | Build configuration. Entry points are `src/background.js` and `src/popup.html`. |
 
 How the software fits together is described under *Software Architecture* and *Software Design* in the [living document][living document].
 
