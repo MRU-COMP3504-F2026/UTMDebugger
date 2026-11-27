@@ -280,6 +280,7 @@ export function validateRecord(storeName, record) {
     case 'settings':
       validateHasValue(savedRecord);
       break;
+    case 'error':
   }
   return savedRecord;
 }
