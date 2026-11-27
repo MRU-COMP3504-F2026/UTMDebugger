@@ -99,9 +99,40 @@
         </section>
         <!-- Settings Tab: displays the content of the selected tab -->
         <section id="settings" class="page" hidden>
-            <h2>Settings</h2>
-            <p class="description">Configure automatic activation</p>
-            <div id="settings-content"></div>
+            <h2 class="text-2xl">Settings</h2>
+            <p class="mt-2 mb-5 text-[13px] text-muted dark:text-[#9aa7a1]">Manage automatic activation.</p>
+
+            <!-- on/off switch (visual only) -->
+            <div class="flex items-center gap-3 rounded-xl border border-line p-4 dark:border-[#3a413e]">
+                <span class="grid size-10 shrink-0 place-items-center rounded-lg bg-[#fdecec] text-sm font-bold text-[#ce464b] dark:bg-[#40201f] dark:text-[#e59a9d]" aria-hidden="true">B</span>
+                    <div class="min-w-0 flex-1">
+                        <label for="block-blacklist" class="text-sm font-bold">Domain Blacklist</label>
+                        <p class="mt-1 text-xs text-muted dark:text-[#9aa7a1]">Disable UTM Debugger on saved domains.</p>
+                    </div>
+                        <input type="checkbox" id="block-blacklist" name="block-blacklist" aria-label="Domain blacklist"
+                            class="relative h-7 w-12 shrink-0 cursor-pointer appearance-none rounded-full bg-gray transition-colors before:absolute before:top-1 before:left-1 before:size-5 before:rounded-full before:bg-white before:transition-transform checked:bg-brand checked:before:translate-x-5">
+                    </div>
+
+            <!-- add a domain -->
+            <p class="mt-5 mb-2 text-xs font-bold">Add a domain</p>
+            <div class="flex gap-2.5">
+                <input id="domain-input" type="text" placeholder="example.com"
+                    class="min-w-0 flex-1 rounded-xl border border-line bg-white px-3.5 py-3 text-sm text-black placeholder:text-muted dark:border-[#3a413e] dark:bg-[#1b1f1e] dark:text-white">
+                <button id="add-domain" type="button" class="rounded-xl bg-brand px-5 py-3 text-sm font-bold text-white hover:opacity-90">Add</button>
+            </div>
+
+            <!-- saved domains -->
+            <p class="mt-5 mb-2 text-xs font-bold">Blacklisted domains</p>
+            <ul id="domain-list" class="border-t border-line dark:border-[#3a413e]">
+                <li class="flex items-center justify-between border-b border-line py-3 text-sm dark:border-[#3a413e]">
+                    <span>example.com</span>
+                    <button id="remove-domain-button" type="button" class="cursor-pointer text-xs text-[#a0454a] hover:underline dark:text-[#e59a9d]">Remove</button>
+                </li>
+                <li class="flex items-center justify-between border-b border-line py-3 text-sm dark:border-[#3a413e]">
+                    <span>ads.example.net</span>
+                    <button type="button" class="cursor-pointer text-xs text-[#a0454a] hover:underline dark:text-[#e59a9d]">Remove</button>
+                </li>
+            </ul>
         </section>
     </main>
     <!-- footer section: DATA FYI/Version info -->

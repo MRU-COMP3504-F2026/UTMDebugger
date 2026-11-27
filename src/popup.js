@@ -186,7 +186,11 @@ async function getErrors() {
 
 function renderErrors(items) {
   const list = document.querySelector("#error-messages");
-  list.replaceChildren();
+    if (!list) return;
+    list.replaceChildren();
+
+  const count = document.querySelector("#error-count");
+    if (count) count.textContent = `${items.length} issue${items.length === 1 ? "" : "s"}`;
 
   document.querySelector("#error-count").textContent =
     `${items.length} issue${items.length === 1 ? "" : "s"}`;
@@ -240,3 +244,47 @@ async function loadErrors() {
 }
 
 loadErrors();
+
+
+// ---------- Settings tab: add/remove list (UI only, nothing is saved) ----------
+
+let domains = ["example.com", "ads.example.net"];
+
+function renderDomains() {
+    const list = document.querySelector("#domain-list");
+      if (!list) return;  
+
+    if (domains.length === 0) {
+        list.append(createEl("li", "py-4 text-[13px] text-muted dark:text-[#9aa7a1]", "No domains added."));
+        return;
+    }
+
+    domains.forEach((domain) => {
+        const row = createEl("li", "flex items-center justify-between border-b border-line py-3 text-sm dark:border-[#3a413e]");
+        const remove = createEl("button", "cursor-pointer text-xs text-[#a0454a] hover:underline dark:text-[#e59a9d]", "Remove");
+        remove.type = "button";
+        remove.addEventListener("click", () => {
+            domains = domains.filter((item) => item !== domain);
+            renderDomains();
+        });
+        row.append(createEl("span", "", domain), remove);
+        list.append(row);
+    });
+}
+
+function addDomain() {
+    const input = document.querySelector("#domain-input");
+    const domain = input.value.trim().toLowerCase();
+    if (domain && !domains.includes(domain)) {
+        domains = [...domains, domain];
+        renderDomains();
+    }
+    input.value = "";
+}
+
+document.querySelector("#add-domain")?.addEventListener("click", addDomain());
+document.querySelector("#domain-input")?.addEventListener("keydown", (event) => {
+    if (event.key === "Enter") addDomain();
+});
+
+renderDomains();
