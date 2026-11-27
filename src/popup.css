@@ -467,3 +467,58 @@
     background: var(--green);
   }
 }
+
+/* Compact the Blocking tab so the HubSpot and Meta Pixel rows are easier to see. */
+#blocking .description {
+  margin-bottom: 8px;
+}
+
+#blocking .blocking-notice {
+  padding: 8px 10px;
+}
+
+#blocking .blocker-row {
+  min-height: 50px;
+  padding: 5px 0;
+}
+
+#blocking .blocker-info p {
+  margin-top: 2px;
+}
+
+/* Anchor the X to the icon tile so it stays centered over the letter. */
+#blocking .blocker-icon {
+  position: relative;
+  width: 32px;
+  height: 32px;
+  flex-basis: 32px;
+}
+
+/* JavaScript adds is-blocked only to the selected service's row. */
+#blocking .blocker-row.is-blocked .blocker-icon {
+  color: #b91c1c;
+  background-color: #fef2f2;
+  border-color: #fca5a5;
+}
+
+/* Draw two strokes through the existing letter. */
+#blocking .is-blocked .blocker-icon::before,
+#blocking .is-blocked .blocker-icon::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 80%;
+  height: 2px;
+  border-radius: 2px;
+  background-color: currentColor;
+  pointer-events: none;
+}
+
+#blocking .is-blocked .blocker-icon::before {
+  transform: translate(-50%, -50%) rotate(45deg);
+}
+
+#blocking .is-blocked .blocker-icon::after {
+  transform: translate(-50%, -50%) rotate(-45deg);
+}
