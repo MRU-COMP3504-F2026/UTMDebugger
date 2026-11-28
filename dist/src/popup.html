@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>UTM Debugger</title>
+  <script type="module" crossorigin src="../popup.js"></script>
+  <link rel="modulepreload" crossorigin href="../assets/utm-Cx-_hj0n.js">
+  <link rel="stylesheet" crossorigin href="../assets/popup-DKwgLPuq.css">
+</head>
+<body>
+    <!-- header section: logo, title, and domain of the current page -->
+    <header class="header">
+        <div class="brand">
+            <img src="../assets/logo-DbJF6sA6.png" alt="UTM Debugger Logo" width="32" height="32">
+        </div>
+        <div class="title">
+            <h1>UTM Debugger</h1>
+            <p class="domain">current-running-url.com</p>
+        </div>
+    </header>
+    <!-- navigation section: buttons to switch between tabs -->
+    <nav class="navigation">
+        <button class="nav-button active" data-target="status" type="button">Status</button>
+        <button class="nav-button" data-target="errors" type="button">Errors</button>
+        <button class="nav-button" data-target="blocking" type="button">Blocking</button>
+        <button class="nav-button" data-target="settings" type="button">Settings</button>
+    </nav>
+    <!-- Tracker Status Tab (Main Tab): displays the content of the selected tab -->
+    <main class="content">
+        <section id="status" class="page">
+            <h2>Tracker Status</h2>
+            <div id="utm-parameters"></div>
+            <p class="description">Tracker health on current page</p>
+            <div id="tracker-list"></div>
+        </section>
+        <!-- Errors Tab: displays the content of the selected tab -->
+        <section id="errors" class="page" hidden>
+                <div class="flex items-center justify-between">
+                    <h2 class="text-2xl">Error log</h2>
+                    <span id="error-count" class="rounded-full bg-brand-light px-3.5 py-2 text-xs font-bold text-brand">0 issues</span>               
+                </div>
+                <p class="mt-2 mb-5 text-[13px] text-muted">Recent tracking issues.</p>
+
+  <div id="error-messages" class="flex flex-col gap-4"></div>
+
+  <button id="export-errors" type="button"
+    class="mt-4 rounded-xl border border-line bg-white px-4 py-3 text-xs text-black font-bold hover:bg-gray-50">
+    Export error log
+  </button>
+</section>
+        <!-- Blocking Tab: displays the content of the selected tab -->
+        <section id="blocking" class="page" hidden>
+            <h2>Tracker blocking</h2>
+            <p class="description">Choose which trackers to block.</p>
+            <div id="blocking-content">
+                <p class="blocking-notice">Blocking is disabled by default.</p>
+                <div class="blocker-list">
+                    <div class="blocker-row">
+                        <span class="blocker-icon" aria-hidden="true">G</span>
+                        <div class="blocker-info">
+                            <label for="block-ga4">Google Analytics 4</label>
+                            <p>Requests allowed</p>
+                        </div>
+                        <input type="checkbox" id="block-ga4" name="block-ga4" class="blocker-toggle" aria-label="Block Google Analytics 4">
+                    </div>
+                    <div class="blocker-row">
+                        <span class="blocker-icon" aria-hidden="true">G</span>
+                        <div class="blocker-info">
+                            <label for="block-google-ads">Google Ads</label>
+                            <p>Requests allowed</p>
+                        </div>
+                        <input type="checkbox" id="block-google-ads" name="block-google-ads" class="blocker-toggle" aria-label="Block Google Ads">
+                    </div>
+                    <div class="blocker-row">
+                        <span class="blocker-icon" aria-hidden="true">M</span>
+                        <div class="blocker-info">
+                            <label for="block-clarity">Microsoft Clarity</label>
+                            <p>Requests allowed</p>
+                        </div>
+                        <input type="checkbox" id="block-clarity" name="block-clarity" class="blocker-toggle" aria-label="Block Microsoft Clarity">
+                    </div>
+                    <div class="blocker-row">
+                        <span class="blocker-icon" aria-hidden="true">H</span>
+                        <div class="blocker-info">
+                            <label for="block-hubspot">HubSpot</label>
+                            <p>Requests allowed</p>
+                        </div>
+                        <input type="checkbox" id="block-hubspot" name="block-hubspot" class="blocker-toggle" aria-label="Block HubSpot">
+                    </div>
+                    <div class="blocker-row">
+                        <span class="blocker-icon" aria-hidden="true">M</span>
+                        <div class="blocker-info">
+                            <label for="block-meta-pixel">Meta Pixel</label>
+                            <p>Requests allowed</p>
+                        </div>
+                        <input type="checkbox" id="block-meta-pixel" name="block-meta-pixel" class="blocker-toggle" aria-label="Block Meta Pixel">
+                    </div>
+                </div>
+            </div>
+        </section>
+        <!-- Settings Tab: displays the content of the selected tab -->
+        <section id="settings" class="page" hidden>
+            <h2>Settings</h2>
+            <p class="description">Configure automatic activation</p>
+            <div id="settings-content"></div>
+        </section>
+    </main>
+    <!-- footer section: DATA FYI/Version info -->
+    <footer class="footer">
+        <span>Data is stored locally</span>
+        <span>UTM Debugger &copy; 2026</span>
+        <span>v1.0.0</span>
+    </footer>
+    <!-- JavaScript for handling popup functionality -->
+</body>
+</html>
